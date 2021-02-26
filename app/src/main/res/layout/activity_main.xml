@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/mainLayout"
     android:layout_width="match_parent"
@@ -10,8 +11,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:contentDescription="@string/background"
-        android:scaleType="fitXY"
         android:foreground="@drawable/overlay"
+        android:scaleType="fitXY"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -41,6 +42,8 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:fillViewport="true"
+        android:paddingStart="@dimen/result_text_size"
+        android:paddingEnd="@dimen/result_text_size"
         app:layout_constraintBottom_toTopOf="@+id/keyboard"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -58,12 +61,13 @@
                 android:layout_weight="1" />
 
             <TextView
-                android:id="@+id/inputText"
+                android:id="@+id/result"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/transparent"
+                android:textAlignment="textEnd"
                 android:textColor="@color/black"
-                android:textSize="@dimen/action_key_text_size"
+                android:textSize="@dimen/result_text_size"
                 android:textStyle="bold" />
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

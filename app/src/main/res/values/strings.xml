@@ -18,4 +18,16 @@
     <string name="subtraction">-</string>
     <string name="addition">+</string>
     <string name="background">background</string>
+    <string name="sin">sin</string>
+    <string name="cos">cos</string>
+    <string name="tan">tan</string>
+    <string name="naturalLogarithm">ln</string>
+    <string name="logarithm">log</string>
+    <string name="squareRoot">√</string>
+    <string name="pi">π</string>
+    <string name="numberE">e</string>
+    <string name="degree">^</string>
+    <string name="openBracket">(</string>
+    <string name="closeBracket">)</string>
+    <string name="exclamation">!</string>
 </resources>
