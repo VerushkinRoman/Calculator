@@ -2,30 +2,24 @@ package com.posse.android1.calculator;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.view.MotionEvent;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
 public class MainActivity extends AppCompatActivity {
 
-    private Button mButton1;
-    private Button mButton2;
-    private Button mButton3;
-    private Button mButton4;
-    private Button mButton5;
-    private Button mButton6;
-    private Button mButton7;
-    private Button mButton8;
-    private Button mButton9;
-    private Button mButton0;
-    private Button mButtonDot;
-    private Button mButtonEquals;
+    private static final int HOLD_DELAY = 500;
+    private static final String KEY_INPUT_STRING = MainActivity.class.getCanonicalName() + "inputString";
+    private final Calculator mCalculator = new Calculator();
 
+    private Button mButtonEquals;
     private Button mButtonDelete;
-    private Button mButtonDivision;
-    private Button mButtonMultiplication;
-    private Button mButtonSubtraction;
-    private Button mButtonAddition;
 
     private Button mButtonSin;
     private Button mButtonCos;
@@ -40,8 +34,21 @@ public class MainActivity extends AppCompatActivity {
     private Button mButtonCloseBracket;
     private Button mButtonExclamation;
 
+    private View.OnTouchListener mDeleteListener;
+
     private TextView mResultView;
     private int mResult;
+    private StringBuilder mInputStringBuilder = new StringBuilder("0");
+
+    private String mMultiplication;
+    private String mDivision;
+    private String mSubtraction;
+    private String mAddition;
+    private String mDot;
+
+    private long lastTime;
+
+    private boolean mDotPressed = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,33 +56,18 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         init();
         if (savedInstanceState != null) {
-            restore();
-        } else mResultView.setText(String.valueOf(mResult));
+            mInputStringBuilder.setLength(0);
+            mInputStringBuilder.insert(0, savedInstanceState.getString(KEY_INPUT_STRING));
+        }
+        updateResult(mInputStringBuilder.toString());
     }
 
-    private void restore() {
-        mResultView.setText("Restored state");
-    }
-
+    @SuppressLint("ClickableViewAccessibility")
     private void init() {
-        mButton0 = findViewById(R.id.number0);
-        mButton1 = findViewById(R.id.number1);
-        mButton2 = findViewById(R.id.number2);
-        mButton3 = findViewById(R.id.number3);
-        mButton4 = findViewById(R.id.number4);
-        mButton5 = findViewById(R.id.number5);
-        mButton6 = findViewById(R.id.number6);
-        mButton7 = findViewById(R.id.number7);
-        mButton8 = findViewById(R.id.number8);
-        mButton9 = findViewById(R.id.number9);
-        mButtonDot = findViewById(R.id.numberDot);
-        mButtonEquals = findViewById(R.id.numberEqual);
 
+        mButtonEquals = findViewById(R.id.numberEqual);
         mButtonDelete = findViewById(R.id.delete);
-        mButtonDivision = findViewById(R.id.division);
-        mButtonMultiplication = findViewById(R.id.multiplication);
-        mButtonSubtraction = findViewById(R.id.subtraction);
-        mButtonAddition = findViewById(R.id.addition);
+        mButtonDelete.setOnTouchListener(mDeleteListener);
 
         mButtonSin = findViewById(R.id.sin);
         mButtonCos = findViewById(R.id.cos);
@@ -91,6 +83,106 @@ public class MainActivity extends AppCompatActivity {
         mButtonExclamation = findViewById(R.id.exclamation);
 
         mResultView = findViewById(R.id.result);
+
+        mMultiplication = getString(R.string.multiplication);
+        mDivision = getString(R.string.division);
+        mSubtraction = getString(R.string.subtraction);
+        mAddition = getString(R.string.addition);
+        mDot = getString(R.string.numberDot);
+
+        mDeleteListener = (v, event) -> {
+            if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                lastTime = System.currentTimeMillis();
+                if (mInputStringBuilder.length() > 1) {
+                    String lastChar = String.valueOf(mInputStringBuilder.charAt(mInputStringBuilder.length() - 1));
+                    if (lastChar.equals(mDot)) {
+                        mDotPressed = false;
+                    }
+                    mInputStringBuilder.deleteCharAt(mInputStringBuilder.length() - 1);
+                } else mInputStringBuilder.setCharAt(0, '0');
+            }
+            if (event.getAction() == MotionEvent.ACTION_UP || event.getAction() == MotionEvent.ACTION_CANCEL) {
+                if (System.currentTimeMillis() - lastTime > HOLD_DELAY) {
+                    mInputStringBuilder.setLength(1);
+                    mInputStringBuilder.setCharAt(0, '0');
+                    mDotPressed = false;
+                }
+            }
+            updateResult(mInputStringBuilder.toString());
+            return false;
+        };
     }
 
+    public void numberButtonsPress(View view) {
+        checkFirstChar();
+        mInputStringBuilder.append(parseText(view));
+        updateResult(mInputStringBuilder.toString());
+    }
+
+    public void actionButtonsPress(View view) {
+        String lastChar = String.valueOf(mInputStringBuilder.charAt(mInputStringBuilder.length() - 1));
+        String buttonText = parseText(view);
+        if (buttonText.equals(mDot) && mDotPressed) {
+            return;
+        }
+        try {
+            Integer.parseInt(lastChar);
+        } catch (NumberFormatException e) {
+            if (buttonText.equals(mDot) && !mDotPressed) {
+                mInputStringBuilder.append("0");
+                mDotPressed = true;
+            } else {
+                mInputStringBuilder.deleteCharAt(mInputStringBuilder.length() - 1);
+            }
+        }
+        mInputStringBuilder.append(parseText(view));
+        updateResult(mInputStringBuilder.toString());
+        mDotPressed = false;
+        if (buttonText.equals(mDot)) {
+            mDotPressed = true;
+        }
+    }
+
+    private void checkFirstChar() {
+        if (mInputStringBuilder.toString().equals("0")) {
+            mInputStringBuilder.deleteCharAt(mInputStringBuilder.length() - 1);
+        }
+    }
+
+    private String parseText(View view) {
+        Button b = (Button) view;
+        return b.getText().toString();
+    }
+
+    private void updateResult(String string) {
+        mResultView.setText(string);
+    }
+
+    public void equalsPress(View view) {
+        double result = mCalculator.calculate(mInputStringBuilder.toString());
+        mInputStringBuilder.setLength(0);
+        String resultString = String.valueOf(result);
+        if (String.valueOf(resultString.charAt(resultString.length() - 2)).equals(mDot) &&
+                String.valueOf(resultString.charAt(resultString.length() - 1)).equals("0")) {
+            mInputStringBuilder.insert(0, (int) result);
+        } else {
+            int intPart = (int) result;
+            result = round(result, 11 - Integer.toString(intPart).length());
+            mInputStringBuilder.insert(0, result);
+        }
+        updateResult(mInputStringBuilder.toString());
+    }
+
+    private double round(double value, int places) {
+        if (places < 0) throw new IllegalArgumentException();
+        BigDecimal bd = BigDecimal.valueOf(value);
+        bd = bd.setScale(places, RoundingMode.HALF_UP);
+        return bd.doubleValue();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle state) {
+        super.onSaveInstanceState(state);
+        state.putString(KEY_INPUT_STRING, mInputStringBuilder.toString());
+    }
 }
