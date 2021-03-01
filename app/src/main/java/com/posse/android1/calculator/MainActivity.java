@@ -16,39 +16,26 @@ public class MainActivity extends AppCompatActivity {
 
     private static final int HOLD_DELAY = 500;
     private static final String KEY_INPUT_STRING = MainActivity.class.getCanonicalName() + "inputString";
+    private static final String KEY_BRACKET_COUNTER = MainActivity.class.getCanonicalName() + "mOpenBracketCounter";
+    private static final String KEY_PRESSED_DOT = MainActivity.class.getCanonicalName() + "mDotPressed";
+
     private final Calculator mCalculator = new Calculator();
-
-    private Button mButtonEquals;
-    private Button mButtonDelete;
-
-    private Button mButtonSin;
-    private Button mButtonCos;
-    private Button mButtonTan;
-    private Button mButtonNaturalLogarithm;
-    private Button mButtonLogarithm;
-    private Button mButtonSquareRoot;
-    private Button mButtonPi;
-    private Button mButtonNumberE;
-    private Button mButtonDegree;
-    private Button mButtonOpenBracket;
-    private Button mButtonCloseBracket;
-    private Button mButtonExclamation;
-
-    private View.OnTouchListener mDeleteListener;
+    private final StringBuilder mInputStringBuilder = new StringBuilder("0");
 
     private TextView mResultView;
-    private int mResult;
-    private StringBuilder mInputStringBuilder = new StringBuilder("0");
 
-    private String mMultiplication;
-    private String mDivision;
-    private String mSubtraction;
-    private String mAddition;
     private String mDot;
+    private String mOpenBracket;
+    private String mCloseBracket;
+    private String mSin;
+    private String mCos;
+    private String mTan;
+    private String mLn;
+    private String mLog;
 
     private long lastTime;
-
-    private boolean mDotPressed = false;
+    private int mOpenBracketCounter;
+    private boolean mDotPressed;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,93 +45,83 @@ public class MainActivity extends AppCompatActivity {
         if (savedInstanceState != null) {
             mInputStringBuilder.setLength(0);
             mInputStringBuilder.insert(0, savedInstanceState.getString(KEY_INPUT_STRING));
+            mDotPressed = savedInstanceState.getBoolean(KEY_PRESSED_DOT);
+            mOpenBracketCounter = savedInstanceState.getInt(KEY_BRACKET_COUNTER);
         }
-        updateResult(mInputStringBuilder.toString());
+        updateResult();
     }
 
     @SuppressLint("ClickableViewAccessibility")
     private void init() {
-
-        mButtonEquals = findViewById(R.id.numberEqual);
-        mButtonDelete = findViewById(R.id.delete);
-        mButtonDelete.setOnTouchListener(mDeleteListener);
-
-        mButtonSin = findViewById(R.id.sin);
-        mButtonCos = findViewById(R.id.cos);
-        mButtonTan = findViewById(R.id.tan);
-        mButtonNaturalLogarithm = findViewById(R.id.naturalLogarithm);
-        mButtonLogarithm = findViewById(R.id.logarithm);
-        mButtonSquareRoot = findViewById(R.id.squareRoot);
-        mButtonPi = findViewById(R.id.pi);
-        mButtonNumberE = findViewById(R.id.numberE);
-        mButtonDegree = findViewById(R.id.degree);
-        mButtonOpenBracket = findViewById(R.id.openBracket);
-        mButtonCloseBracket = findViewById(R.id.closeBracket);
-        mButtonExclamation = findViewById(R.id.exclamation);
-
         mResultView = findViewById(R.id.result);
-
-        mMultiplication = getString(R.string.multiplication);
-        mDivision = getString(R.string.division);
-        mSubtraction = getString(R.string.subtraction);
-        mAddition = getString(R.string.addition);
         mDot = getString(R.string.numberDot);
+        mOpenBracket = getString(R.string.openBracket);
+        mCloseBracket = getString(R.string.closeBracket);
+        mSin = getString(R.string.sin);
+        mCos = getString(R.string.cos);
+        mTan = getString(R.string.tan);
+        mLn = getString(R.string.naturalLogarithm);
+        mLog = getString(R.string.logarithm);
 
-        mDeleteListener = (v, event) -> {
+        Button mButtonDelete = findViewById(R.id.delete);
+        mButtonDelete.setOnTouchListener((v, event) -> {
             if (event.getAction() == MotionEvent.ACTION_DOWN) {
                 lastTime = System.currentTimeMillis();
                 if (mInputStringBuilder.length() > 1) {
-                    String lastChar = String.valueOf(mInputStringBuilder.charAt(mInputStringBuilder.length() - 1));
-                    if (lastChar.equals(mDot)) {
-                        mDotPressed = false;
+                    String lastChar = getLastChar();
+                    if (lastChar.equals(mDot)) mDotPressed = false;
+                    if (lastChar.equals(mOpenBracket)) {
+                        if (!String.valueOf(mInputStringBuilder.charAt(mInputStringBuilder.length() - 2)).equals(mOpenBracket)) {
+                            String str = mInputStringBuilder.substring(mInputStringBuilder.lastIndexOf(" "));
+                            if (str.contains(mSin) || str.contains(mCos) || str.contains(mTan) || str.contains(mLn) || str.contains(mLog)) {
+                                deleteLastChars(str.length() - 2);
+                            }
+                        }
+                        mOpenBracketCounter--;
                     }
-                    mInputStringBuilder.deleteCharAt(mInputStringBuilder.length() - 1);
-                } else mInputStringBuilder.setCharAt(0, '0');
+                    if (lastChar.equals(mCloseBracket)) mOpenBracketCounter++;
+                    if (lastChar.equals(" ")) deleteLastChars(2);
+                    deleteLastChars(1);
+                } else {
+                    mOpenBracketCounter = 0;
+                    mInputStringBuilder.setLength(0);
+                    mInputStringBuilder.append('0');
+                }
             }
             if (event.getAction() == MotionEvent.ACTION_UP || event.getAction() == MotionEvent.ACTION_CANCEL) {
                 if (System.currentTimeMillis() - lastTime > HOLD_DELAY) {
-                    mInputStringBuilder.setLength(1);
-                    mInputStringBuilder.setCharAt(0, '0');
+                    mInputStringBuilder.setLength(0);
+                    mInputStringBuilder.append('0');
                     mDotPressed = false;
+                    mOpenBracketCounter = 0;
                 }
             }
-            updateResult(mInputStringBuilder.toString());
+            updateResult();
             return false;
-        };
+        });
     }
 
     public void numberButtonsPress(View view) {
-        checkFirstChar();
+        deleteFirstChar();
         mInputStringBuilder.append(parseText(view));
-        updateResult(mInputStringBuilder.toString());
+        updateResult();
+    }
+
+    private void deleteFirstChar() {
+        if (mInputStringBuilder.toString().equals("0")) deleteLastChars(1);
     }
 
     public void actionButtonsPress(View view) {
-        String lastChar = String.valueOf(mInputStringBuilder.charAt(mInputStringBuilder.length() - 1));
+        if (getLastChar().equals(mOpenBracket)) return;
+        deleteFirstChar();
         String buttonText = parseText(view);
-        if (buttonText.equals(mDot) && mDotPressed) {
-            return;
-        }
-        try {
-            Integer.parseInt(lastChar);
-        } catch (NumberFormatException e) {
-            if (buttonText.equals(mDot) && !mDotPressed) {
-                mInputStringBuilder.append("0");
-                mDotPressed = true;
-            } else {
-                mInputStringBuilder.deleteCharAt(mInputStringBuilder.length() - 1);
-            }
-        }
-        mInputStringBuilder.append(parseText(view));
-        updateResult(mInputStringBuilder.toString());
+        mInputStringBuilder.append(" ").append(buttonText).append(" ");
+        updateResult();
         mDotPressed = false;
-        if (buttonText.equals(mDot)) {
-            mDotPressed = true;
-        }
     }
 
-    private void checkFirstChar() {
-        if (mInputStringBuilder.toString().equals("0")) {
+    private void deleteLastChars(int quantity) {
+        for (int i = 0; i < quantity; i++) {
             mInputStringBuilder.deleteCharAt(mInputStringBuilder.length() - 1);
         }
     }
@@ -154,11 +131,12 @@ public class MainActivity extends AppCompatActivity {
         return b.getText().toString();
     }
 
-    private void updateResult(String string) {
-        mResultView.setText(string);
+    private void updateResult() {
+        mResultView.setText(mInputStringBuilder.toString());
     }
 
     public void equalsPress(View view) {
+        if (mOpenBracketCounter != 0) return;
         double result = mCalculator.calculate(mInputStringBuilder.toString());
         mInputStringBuilder.setLength(0);
         String resultString = String.valueOf(result);
@@ -169,8 +147,9 @@ public class MainActivity extends AppCompatActivity {
             int intPart = (int) result;
             result = round(result, 11 - Integer.toString(intPart).length());
             mInputStringBuilder.insert(0, result);
+            mDotPressed = true;
         }
-        updateResult(mInputStringBuilder.toString());
+        updateResult();
     }
 
     private double round(double value, int places) {
@@ -184,5 +163,81 @@ public class MainActivity extends AppCompatActivity {
     protected void onSaveInstanceState(Bundle state) {
         super.onSaveInstanceState(state);
         state.putString(KEY_INPUT_STRING, mInputStringBuilder.toString());
+        state.putInt(KEY_BRACKET_COUNTER, mOpenBracketCounter);
+        state.putBoolean(KEY_PRESSED_DOT, mDotPressed);
+    }
+
+    public void additionalButtonsPress(View view) {
+        String buttonText = parseText(view);
+        String lastChar = getLastChar();
+        try {
+            Integer.parseInt(lastChar);
+            if (!mInputStringBuilder.toString().equals("0") && !buttonText.equals(mCloseBracket))
+                return;
+        } catch (NumberFormatException ignored) {
+            if (lastChar.equals(mCloseBracket) && !buttonText.equals(mCloseBracket)) return;
+        }
+        String pi = getString(R.string.pi);
+        String e = getString(R.string.numberE);
+        if (buttonText.equals(pi) || buttonText.equals(e)) {
+            if (mDotPressed) {
+                return;
+            } else {
+                try {
+                    Integer.parseInt(lastChar);
+                    return;
+                } catch (NumberFormatException exception) {
+                    if (lastChar.equals(mCloseBracket)) {
+                        return;
+                    }
+                    mDotPressed = true;
+                }
+            }
+        }
+        if (buttonText.equals(pi)) buttonText = String.valueOf(Math.PI);
+        if (buttonText.equals(e)) buttonText = String.valueOf(Math.E);
+        if (buttonText.equals(mCloseBracket)) {
+            if (mOpenBracketCounter > 0 && !lastChar.equals(mOpenBracket)) {
+                mOpenBracketCounter--;
+            } else {
+                return;
+            }
+        }
+        deleteFirstChar();
+        mInputStringBuilder.append(buttonText);
+        if (!buttonText.equals(mOpenBracket) && !buttonText.equals(mCloseBracket) &&
+                !buttonText.equals(pi) && !buttonText.equals(e)) {
+            mInputStringBuilder.append(mOpenBracket);
+            mOpenBracketCounter++;
+        }
+        if (buttonText.equals(mOpenBracket)) mOpenBracketCounter++;
+        updateResult();
+    }
+
+    private String getLastChar() {
+        if (String.valueOf(mInputStringBuilder.charAt(mInputStringBuilder.length() - 1)).equals(" ")) {
+            return String.valueOf(mInputStringBuilder.charAt(mInputStringBuilder.length() - 2));
+        } else return String.valueOf(mInputStringBuilder.charAt(mInputStringBuilder.length() - 1));
+    }
+
+    public void dotButtonsPress(View view) {
+        String lastChar = getLastChar();
+        String buttonText = parseText(view);
+        if (mDotPressed) {
+            return;
+        } else {
+            try {
+                Integer.parseInt(lastChar);
+            } catch (NumberFormatException e) {
+                if (!lastChar.equals(mCloseBracket)) {
+                    mInputStringBuilder.append("0");
+                } else {
+                    return;
+                }
+            }
+            mDotPressed = true;
+        }
+        mInputStringBuilder.append(buttonText);
+        updateResult();
     }
 }

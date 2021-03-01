@@ -20,7 +20,8 @@
             android:textAllCaps="false"
             android:textColor="@color/black"
             android:textSize="@dimen/key_text_size"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:onClick="additionalButtonsPress"/>
 
         <Button
             android:id="@+id/cos"
@@ -32,7 +33,8 @@
             android:textAllCaps="false"
             android:textColor="@color/black"
             android:textSize="@dimen/key_text_size"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:onClick="additionalButtonsPress"/>
 
         <Button
             android:id="@+id/tan"
@@ -44,7 +46,8 @@
             android:textAllCaps="false"
             android:textColor="@color/black"
             android:textSize="@dimen/key_text_size"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:onClick="additionalButtonsPress"/>
     </TableRow>
 
     <TableRow
@@ -62,7 +65,8 @@
             android:textAllCaps="false"
             android:textColor="@color/black"
             android:textSize="@dimen/key_text_size"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:onClick="additionalButtonsPress"/>
 
         <Button
             android:id="@+id/logarithm"
@@ -74,7 +78,8 @@
             android:textAllCaps="false"
             android:textColor="@color/black"
             android:textSize="@dimen/key_text_size"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:onClick="additionalButtonsPress"/>
 
         <Button
             android:id="@+id/squareRoot"
@@ -86,7 +91,8 @@
             android:textAllCaps="false"
             android:textColor="@color/black"
             android:textSize="@dimen/key_text_size"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:onClick="additionalButtonsPress"/>
     </TableRow>
 
     <TableRow
@@ -104,7 +110,8 @@
             android:textAllCaps="false"
             android:textColor="@color/black"
             android:textSize="@dimen/key_text_size"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:onClick="additionalButtonsPress"/>
 
         <Button
             android:id="@+id/numberE"
@@ -116,7 +123,8 @@
             android:textAllCaps="false"
             android:textColor="@color/black"
             android:textSize="@dimen/key_text_size"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:onClick="additionalButtonsPress"/>
 
         <Button
             android:id="@+id/degree"
@@ -128,7 +136,8 @@
             android:textAllCaps="false"
             android:textColor="@color/black"
             android:textSize="@dimen/key_text_size"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:onClick="additionalButtonsPress"/>
     </TableRow>
 
     <TableRow
@@ -146,7 +155,8 @@
             android:textAllCaps="false"
             android:textColor="@color/black"
             android:textSize="@dimen/key_text_size"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:onClick="additionalButtonsPress"/>
 
         <Button
             android:id="@+id/closeBracket"
@@ -158,7 +168,8 @@
             android:textAllCaps="false"
             android:textColor="@color/black"
             android:textSize="@dimen/key_text_size"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:onClick="additionalButtonsPress"/>
 
         <Button
             android:id="@+id/exclamation"
@@ -170,6 +181,7 @@
             android:textAllCaps="false"
             android:textColor="@color/black"
             android:textSize="@dimen/key_text_size"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:onClick="additionalButtonsPress"/>
     </TableRow>
 </TableLayout>
