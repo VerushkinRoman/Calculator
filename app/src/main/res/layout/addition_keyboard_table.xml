@@ -111,7 +111,7 @@
             android:textColor="@color/black"
             android:textSize="@dimen/key_text_size"
             android:textStyle="bold"
-            android:onClick="additionalButtonsPress"/>
+            android:onClick="numberButtonsPress"/>
 
         <Button
             android:id="@+id/numberE"
@@ -124,7 +124,7 @@
             android:textColor="@color/black"
             android:textSize="@dimen/key_text_size"
             android:textStyle="bold"
-            android:onClick="additionalButtonsPress"/>
+            android:onClick="numberButtonsPress"/>
 
         <Button
             android:id="@+id/degree"

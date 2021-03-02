@@ -1,5 +1,6 @@
 package com.posse.android1.calculator;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
@@ -18,10 +19,15 @@ public class MainActivity extends AppCompatActivity {
     private static final String KEY_INPUT_STRING = MainActivity.class.getCanonicalName() + "inputString";
     private static final String KEY_BRACKET_COUNTER = MainActivity.class.getCanonicalName() + "mOpenBracketCounter";
     private static final String KEY_PRESSED_DOT = MainActivity.class.getCanonicalName() + "mDotPressed";
+    private static final String KEY_RESULT_STRING = MainActivity.class.getCanonicalName() + "mResultString";
+    private static final String KEY_EXCEPTION = MainActivity.class.getCanonicalName() + "mException";
 
-    private final Calculator mCalculator = new Calculator();
     private final StringBuilder mInputStringBuilder = new StringBuilder("0");
+    private final String mError = "Деление на 0 или переполнение!";
 
+    private View.OnTouchListener mDeleteButtonListener;
+
+    private Calculator mCalculator;
     private TextView mResultView;
 
     private String mDot;
@@ -32,6 +38,16 @@ public class MainActivity extends AppCompatActivity {
     private String mTan;
     private String mLn;
     private String mLog;
+    private String mDegree;
+    private String mMultiplication;
+    private String mSquareRoot;
+    private String mExclamation;
+    private String mDivision;
+    private String mSubtraction;
+    private String mAddition;
+
+    private String mResultString = "";
+    private String mException = "";
 
     private long lastTime;
     private int mOpenBracketCounter;
@@ -47,6 +63,8 @@ public class MainActivity extends AppCompatActivity {
             mInputStringBuilder.insert(0, savedInstanceState.getString(KEY_INPUT_STRING));
             mDotPressed = savedInstanceState.getBoolean(KEY_PRESSED_DOT);
             mOpenBracketCounter = savedInstanceState.getInt(KEY_BRACKET_COUNTER);
+            mResultString = savedInstanceState.getString(KEY_RESULT_STRING);
+            mException = savedInstanceState.getString(KEY_EXCEPTION);
         }
         updateResult();
     }
@@ -62,19 +80,51 @@ public class MainActivity extends AppCompatActivity {
         mTan = getString(R.string.tan);
         mLn = getString(R.string.naturalLogarithm);
         mLog = getString(R.string.logarithm);
+        mDegree = getString(R.string.degree);
+        mSquareRoot = getString(R.string.squareRoot);
+        mExclamation = getString(R.string.exclamation);
+        mDivision = getString(R.string.division);
+        mSubtraction = getString(R.string.subtraction);
+        mAddition = getString(R.string.addition);
+        mMultiplication = getString(R.string.multiplication);
+
+        mCalculator = new Calculator(this);
 
         Button mButtonDelete = findViewById(R.id.delete);
-        mButtonDelete.setOnTouchListener((v, event) -> {
+        initDeleteButtonListener();
+        mButtonDelete.setOnTouchListener(mDeleteButtonListener);
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    private void initDeleteButtonListener() {
+        mDeleteButtonListener = (v, event) -> {
             if (event.getAction() == MotionEvent.ACTION_DOWN) {
                 lastTime = System.currentTimeMillis();
+                if (mError.contentEquals(mInputStringBuilder) || mException.contentEquals(mInputStringBuilder)) {
+                    deleteAllChars();
+                    return false;
+                }
                 if (mInputStringBuilder.length() > 1) {
                     String lastChar = getLastChar();
                     if (lastChar.equals(mDot)) mDotPressed = false;
                     if (lastChar.equals(mOpenBracket)) {
                         if (!String.valueOf(mInputStringBuilder.charAt(mInputStringBuilder.length() - 2)).equals(mOpenBracket)) {
-                            String str = mInputStringBuilder.substring(mInputStringBuilder.lastIndexOf(" "));
+                            if (mInputStringBuilder.length() <= mSin.length() + 1) {
+                                deleteAllChars();
+                                return false;
+                            }
+                            deleteLastChars(1);
+                            String strBracket = "";
+                            if (mInputStringBuilder.toString().contains(mOpenBracket)) {
+                                strBracket = mInputStringBuilder.substring(mInputStringBuilder.lastIndexOf(mOpenBracket));
+                            }
+                            mInputStringBuilder.append(mOpenBracket);
+                            String strEmpty = "";
+                            if (mInputStringBuilder.toString().contains(" "))
+                                strEmpty = mInputStringBuilder.substring(mInputStringBuilder.lastIndexOf(" "));
+                            String str = (strBracket.length() > strEmpty.length()) ? strBracket : strEmpty;
                             if (str.contains(mSin) || str.contains(mCos) || str.contains(mTan) || str.contains(mLn) || str.contains(mLog)) {
-                                deleteLastChars(str.length() - 2);
+                                deleteLastChars(str.length() - 1);
                             }
                         }
                         mOpenBracketCounter--;
@@ -83,27 +133,53 @@ public class MainActivity extends AppCompatActivity {
                     if (lastChar.equals(" ")) deleteLastChars(2);
                     deleteLastChars(1);
                 } else {
-                    mOpenBracketCounter = 0;
-                    mInputStringBuilder.setLength(0);
-                    mInputStringBuilder.append('0');
+                    deleteAllChars();
                 }
             }
             if (event.getAction() == MotionEvent.ACTION_UP || event.getAction() == MotionEvent.ACTION_CANCEL) {
                 if (System.currentTimeMillis() - lastTime > HOLD_DELAY) {
-                    mInputStringBuilder.setLength(0);
-                    mInputStringBuilder.append('0');
+                    deleteAllChars();
                     mDotPressed = false;
-                    mOpenBracketCounter = 0;
                 }
             }
             updateResult();
             return false;
-        });
+        };
+    }
+
+    private void deleteAllChars() {
+        mOpenBracketCounter = 0;
+        mInputStringBuilder.setLength(0);
+        mInputStringBuilder.append('0');
     }
 
     public void numberButtonsPress(View view) {
+        if (mError.contentEquals(mInputStringBuilder) ||
+                mException.contentEquals(mInputStringBuilder) ||
+                mResultString.contentEquals(mInputStringBuilder)) deleteAllChars();
+        String lastChar = getLastChar();
+        String buttonText = parseText(view);
+        String pi = getString(R.string.pi);
+        String e = getString(R.string.numberE);
+        if (buttonText.equals(pi) || buttonText.equals(e)) {
+            if (mDotPressed) {
+                return;
+            } else {
+                try {
+                    Integer.parseInt(lastChar);
+                    if (!mInputStringBuilder.toString().equals("0")) return;
+                } catch (NumberFormatException exception) {
+                    if (lastChar.equals(mCloseBracket)) {
+                        return;
+                    }
+                    mDotPressed = true;
+                }
+            }
+        }
+        if (buttonText.equals(pi)) buttonText = String.valueOf(Math.PI);
+        if (buttonText.equals(e)) buttonText = String.valueOf(Math.E);
         deleteFirstChar();
-        mInputStringBuilder.append(parseText(view));
+        mInputStringBuilder.append(buttonText);
         updateResult();
     }
 
@@ -112,6 +188,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void actionButtonsPress(View view) {
+        if (mError.contentEquals(mInputStringBuilder) ||
+                mException.contentEquals(mInputStringBuilder)) return;
         if (getLastChar().equals(mOpenBracket)) return;
         deleteFirstChar();
         String buttonText = parseText(view);
@@ -136,20 +214,54 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void equalsPress(View view) {
-        if (mOpenBracketCounter != 0) return;
-        double result = mCalculator.calculate(mInputStringBuilder.toString());
-        mInputStringBuilder.setLength(0);
-        String resultString = String.valueOf(result);
-        if (String.valueOf(resultString.charAt(resultString.length() - 2)).equals(mDot) &&
-                String.valueOf(resultString.charAt(resultString.length() - 1)).equals("0")) {
-            mInputStringBuilder.insert(0, (int) result);
-        } else {
-            int intPart = (int) result;
-            result = round(result, 11 - Integer.toString(intPart).length());
-            mInputStringBuilder.insert(0, result);
-            mDotPressed = true;
+        if (mError.contentEquals(mInputStringBuilder) ||
+                mException.contentEquals(mInputStringBuilder) ||
+                mResultString.contentEquals(mInputStringBuilder) ||
+                mOpenBracketCounter != 0) return;
+        String lastChar = getLastChar();
+        try {
+            Integer.parseInt(lastChar);
+        } catch (NumberFormatException exception) {
+            if (!lastChar.equals(mCloseBracket)) return;
         }
-        updateResult();
+        try {
+            String calculateString = mInputStringBuilder.toString();
+            if (!calculateString.equals(makeExponent(calculateString))) {
+                calculateString = makeExponent(calculateString);
+            }
+            double result = mCalculator.calculate(calculateString);
+            mInputStringBuilder.setLength(0);
+            mResultString = String.valueOf(result);
+            if (String.valueOf(mResultString.charAt(mResultString.length() - 2)).equals(mDot) &&
+                    String.valueOf(mResultString.charAt(mResultString.length() - 1)).equals("0")) {
+                mInputStringBuilder.append((int) result);
+            } else {
+                int intPart = (int) result;
+                result = round(result, 11 - Integer.toString(intPart).length());
+                mInputStringBuilder.append(result);
+                mDotPressed = true;
+            }
+            updateResult();
+        } catch (Exception exception) {
+            mInputStringBuilder.setLength(0);
+            if (exception instanceof NumberFormatException) {
+                mResultView.setText(mError);
+                mInputStringBuilder.append(mError);
+            } else {
+                mException = exception.getMessage();
+                mInputStringBuilder.append(mException);
+                mResultView.setText(mException);
+            }
+        }
+    }
+
+    private String makeExponent(String string) {
+        if (string.contains("E")) {
+            return string.substring(0, string.indexOf("E")) +
+                    mMultiplication + "10" + mDegree +
+                    string.substring(string.indexOf("E") + 1, string.indexOf(" ")) +
+                    string.substring(string.indexOf(" "));
+        } else return string;
     }
 
     private double round(double value, int places) {
@@ -160,42 +272,28 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle state) {
+    protected void onSaveInstanceState(@NonNull Bundle state) {
         super.onSaveInstanceState(state);
         state.putString(KEY_INPUT_STRING, mInputStringBuilder.toString());
         state.putInt(KEY_BRACKET_COUNTER, mOpenBracketCounter);
         state.putBoolean(KEY_PRESSED_DOT, mDotPressed);
+        state.putString(KEY_RESULT_STRING, mResultString);
+        state.putString(KEY_EXCEPTION, mException);
     }
 
     public void additionalButtonsPress(View view) {
+        if (mError.contentEquals(mInputStringBuilder) ||
+                mException.contentEquals(mInputStringBuilder) ||
+                mResultString.contentEquals(mInputStringBuilder)) deleteAllChars();
         String buttonText = parseText(view);
         String lastChar = getLastChar();
         try {
             Integer.parseInt(lastChar);
-            if (!mInputStringBuilder.toString().equals("0") && !buttonText.equals(mCloseBracket))
+            if (!mInputStringBuilder.toString().equals("0") && !buttonText.equals(mCloseBracket) && !buttonText.equals(mDegree))
                 return;
         } catch (NumberFormatException ignored) {
             if (lastChar.equals(mCloseBracket) && !buttonText.equals(mCloseBracket)) return;
         }
-        String pi = getString(R.string.pi);
-        String e = getString(R.string.numberE);
-        if (buttonText.equals(pi) || buttonText.equals(e)) {
-            if (mDotPressed) {
-                return;
-            } else {
-                try {
-                    Integer.parseInt(lastChar);
-                    return;
-                } catch (NumberFormatException exception) {
-                    if (lastChar.equals(mCloseBracket)) {
-                        return;
-                    }
-                    mDotPressed = true;
-                }
-            }
-        }
-        if (buttonText.equals(pi)) buttonText = String.valueOf(Math.PI);
-        if (buttonText.equals(e)) buttonText = String.valueOf(Math.E);
         if (buttonText.equals(mCloseBracket)) {
             if (mOpenBracketCounter > 0 && !lastChar.equals(mOpenBracket)) {
                 mOpenBracketCounter--;
@@ -205,8 +303,7 @@ public class MainActivity extends AppCompatActivity {
         }
         deleteFirstChar();
         mInputStringBuilder.append(buttonText);
-        if (!buttonText.equals(mOpenBracket) && !buttonText.equals(mCloseBracket) &&
-                !buttonText.equals(pi) && !buttonText.equals(e)) {
+        if (!buttonText.equals(mOpenBracket) && !buttonText.equals(mCloseBracket) && !buttonText.equals(mDegree)) {
             mInputStringBuilder.append(mOpenBracket);
             mOpenBracketCounter++;
         }
@@ -221,6 +318,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void dotButtonsPress(View view) {
+        if (mError.contentEquals(mInputStringBuilder) ||
+                mException.contentEquals(mInputStringBuilder) ||
+                mResultString.contentEquals(mInputStringBuilder)) deleteAllChars();
         String lastChar = getLastChar();
         String buttonText = parseText(view);
         if (mDotPressed) {
@@ -239,5 +339,65 @@ public class MainActivity extends AppCompatActivity {
         }
         mInputStringBuilder.append(buttonText);
         updateResult();
+    }
+
+    public String getDot() {
+        return mDot;
+    }
+
+    public String getOpenBracket() {
+        return mOpenBracket;
+    }
+
+    public String getCloseBracket() {
+        return mCloseBracket;
+    }
+
+    public String getSin() {
+        return mSin;
+    }
+
+    public String getCos() {
+        return mCos;
+    }
+
+    public String getTan() {
+        return mTan;
+    }
+
+    public String getLn() {
+        return mLn;
+    }
+
+    public String getLog() {
+        return mLog;
+    }
+
+    public String getDegree() {
+        return mDegree;
+    }
+
+    public String getMultiplication() {
+        return mMultiplication;
+    }
+
+    public String getSquareRoot() {
+        return mSquareRoot;
+    }
+
+    public String getExclamation() {
+        return mExclamation;
+    }
+
+    public String getDivision() {
+        return mDivision;
+    }
+
+    public String getSubtraction() {
+        return mSubtraction;
+    }
+
+    public String getAddition() {
+        return mAddition;
     }
 }

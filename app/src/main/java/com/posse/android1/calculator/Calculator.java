@@ -1,6 +1,41 @@
 package com.posse.android1.calculator;
 
 public class Calculator {
+
+    private final char mAddition;
+    private final char mSubtraction;
+    private final char mMultiplication;
+    private final char mDivision;
+    private final char mOpenBracket;
+    private final char mCloseBracket;
+    private final char mDot;
+    private final char mDegree;
+    private final char mSquareRoot;
+    private final char mExclamation;
+    private final String mSin;
+    private final String mCos;
+    private final String mTan;
+    private final String mLn;
+    private final String mLog;
+
+    Calculator(MainActivity mainActivity) {
+        mAddition = mainActivity.getAddition().charAt(0);
+        mSubtraction = mainActivity.getSubtraction().charAt(0);
+        mMultiplication = mainActivity.getMultiplication().charAt(0);
+        mDivision = mainActivity.getDivision().charAt(0);
+        mOpenBracket = mainActivity.getOpenBracket().charAt(0);
+        mCloseBracket = mainActivity.getCloseBracket().charAt(0);
+        mDot = mainActivity.getDot().charAt(0);
+        mDegree = mainActivity.getDegree().charAt(0);
+        mSquareRoot = mainActivity.getSquareRoot().charAt(0);
+        mExclamation = mainActivity.getExclamation().charAt(0);
+        mSin = mainActivity.getSin();
+        mCos = mainActivity.getCos();
+        mTan = mainActivity.getTan();
+        mLn = mainActivity.getLn();
+        mLog = mainActivity.getLog();
+    }
+
     public double calculate(final String inputString) {
         return new Object() {
             int mPosition = -1;
@@ -36,8 +71,8 @@ public class Calculator {
             private double parseExpression() {
                 double x = parseTerm();
                 for (; ; ) {
-                    if (eat('+')) x += parseTerm(); // addition
-                    else if (eat('-')) x -= parseTerm(); // subtraction
+                    if (eat(mAddition)) x += parseTerm(); // addition
+                    else if (eat(mSubtraction)) x -= parseTerm(); // subtraction
                     else return x;
                 }
             }
@@ -45,41 +80,52 @@ public class Calculator {
             private double parseTerm() {
                 double x = parseFactor();
                 for (; ; ) {
-                    if (eat('*')) x *= parseFactor(); // multiplication
-                    else if (eat('/')) x /= parseFactor(); // division
+                    if (eat(mMultiplication)) x *= parseFactor(); // multiplication
+                    else if (eat(mDivision)) x /= parseFactor(); // division
                     else return x;
                 }
             }
 
-           private double parseFactor() {
-                if (eat('+')) return parseFactor(); // unary plus
-                if (eat('-')) return -parseFactor(); // unary minus
+            private double parseFactor() {
+                if (eat(mAddition)) return parseFactor(); // unary plus
+                if (eat(mSubtraction)) return -parseFactor(); // unary minus
 
                 double x;
                 int startPos = mPosition;
-                if (eat('(')) { // parentheses
+                if (eat(mOpenBracket)) { // parentheses
                     x = parseExpression();
-                    eat(')');
-                } else if ((mChar >= '0' && mChar <= '9') || mChar == '.') { // numbers
-                    while ((mChar >= '0' && mChar <= '9') || mChar == '.') nextChar();
+                    eat(mCloseBracket);
+                } else if ((mChar >= '0' && mChar <= '9') || mChar == mDot) { // numbers
+                    while ((mChar >= '0' && mChar <= '9') || mChar == mDot) nextChar();
                     x = Double.parseDouble(inputString.substring(startPos, mPosition));
                 } else if (mChar >= 'a' && mChar <= 'z') { // functions
                     while (mChar >= 'a' && mChar <= 'z') nextChar();
                     String func = inputString.substring(startPos, mPosition);
                     x = parseFactor();
-                    if (func.equals("sqrt")) x = Math.sqrt(x);
-                    else if (func.equals("sin")) x = Math.sin(Math.toRadians(x));
-                    else if (func.equals("cos")) x = Math.cos(Math.toRadians(x));
-                    else if (func.equals("tan")) x = Math.tan(Math.toRadians(x));
+                    if (func.equals(mSin)) x = Math.sin(Math.toRadians(x));
+                    else if (func.equals(mCos)) x = Math.cos(Math.toRadians(x));
+                    else if (func.equals(mTan)) x = Math.tan(Math.toRadians(x));
+                    else if (func.equals(mLn)) x = Math.log(x);
+                    else if (func.equals(mLog)) x = Math.log10(x);
                     else throw new RuntimeException("Unknown function: " + func);
                 } else {
-                    throw new RuntimeException("Unexpected: " + (char) mChar);
+                    throw new RuntimeException("Unexpected char: " + (char) mChar);
                 }
 
-                if (eat('^')) x = Math.pow(x, parseFactor()); // exponentiation
+                if (eat(mSquareRoot)) x = Math.sqrt(x);
+                if (eat(mDegree)) x = Math.pow(x, parseFactor()); // exponentiation
+                if (eat(mExclamation)) x = calculateFactorial(x);
 
                 return x;
             }
+
+            private double calculateFactorial(double x) {
+                if (x <= 2) {
+                    return x;
+                }
+                return x * calculateFactorial(x - 1);
+            }
+
         }.parse();
     }
 }
