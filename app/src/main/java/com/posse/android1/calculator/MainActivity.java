@@ -130,13 +130,17 @@ public class MainActivity extends AppCompatActivity {
                         mOpenBracketCounter--;
                     }
                     if (lastChar.equals(mCloseBracket)) mOpenBracketCounter++;
-                    if (lastChar.equals(" ")) deleteLastChars(2);
+                    if (lastChar.equals(mSubtraction) || lastChar.equals(mAddition) ||
+                            lastChar.equals(mMultiplication) || lastChar.equals(mDivision))
+                        deleteLastChars(2);
                     deleteLastChars(1);
                 } else {
                     deleteAllChars();
                 }
             }
-            if (event.getAction() == MotionEvent.ACTION_UP || event.getAction() == MotionEvent.ACTION_CANCEL) {
+            if (event.getAction() == MotionEvent.ACTION_UP ||
+                    event.getAction() == MotionEvent.ACTION_CANCEL ||
+                    event.getAction() == MotionEvent.ACTION_MOVE) {
                 if (System.currentTimeMillis() - lastTime > HOLD_DELAY) {
                     deleteAllChars();
                     mDotPressed = false;
@@ -145,72 +149,6 @@ public class MainActivity extends AppCompatActivity {
             updateResult();
             return false;
         };
-    }
-
-    private void deleteAllChars() {
-        mOpenBracketCounter = 0;
-        mInputStringBuilder.setLength(0);
-        mInputStringBuilder.append('0');
-    }
-
-    public void numberButtonsPress(View view) {
-        if (mError.contentEquals(mInputStringBuilder) ||
-                mException.contentEquals(mInputStringBuilder) ||
-                mResultString.contentEquals(mInputStringBuilder)) deleteAllChars();
-        String lastChar = getLastChar();
-        String buttonText = parseText(view);
-        String pi = getString(R.string.pi);
-        String e = getString(R.string.numberE);
-        if (buttonText.equals(pi) || buttonText.equals(e)) {
-            if (mDotPressed) {
-                return;
-            } else {
-                try {
-                    Integer.parseInt(lastChar);
-                    if (!mInputStringBuilder.toString().equals("0")) return;
-                } catch (NumberFormatException exception) {
-                    if (lastChar.equals(mCloseBracket)) {
-                        return;
-                    }
-                    mDotPressed = true;
-                }
-            }
-        }
-        if (buttonText.equals(pi)) buttonText = String.valueOf(Math.PI);
-        if (buttonText.equals(e)) buttonText = String.valueOf(Math.E);
-        deleteFirstChar();
-        mInputStringBuilder.append(buttonText);
-        updateResult();
-    }
-
-    private void deleteFirstChar() {
-        if (mInputStringBuilder.toString().equals("0")) deleteLastChars(1);
-    }
-
-    public void actionButtonsPress(View view) {
-        if (mError.contentEquals(mInputStringBuilder) ||
-                mException.contentEquals(mInputStringBuilder)) return;
-        if (getLastChar().equals(mOpenBracket)) return;
-        deleteFirstChar();
-        String buttonText = parseText(view);
-        mInputStringBuilder.append(" ").append(buttonText).append(" ");
-        updateResult();
-        mDotPressed = false;
-    }
-
-    private void deleteLastChars(int quantity) {
-        for (int i = 0; i < quantity; i++) {
-            mInputStringBuilder.deleteCharAt(mInputStringBuilder.length() - 1);
-        }
-    }
-
-    private String parseText(View view) {
-        Button b = (Button) view;
-        return b.getText().toString();
-    }
-
-    private void updateResult() {
-        mResultView.setText(mInputStringBuilder.toString());
     }
 
     public void equalsPress(View view) {
@@ -222,7 +160,7 @@ public class MainActivity extends AppCompatActivity {
         try {
             Integer.parseInt(lastChar);
         } catch (NumberFormatException exception) {
-            if (!lastChar.equals(mCloseBracket)) return;
+            if (!lastChar.equals(mCloseBracket) && !lastChar.equals(mExclamation)) return;
         }
         try {
             String calculateString = mInputStringBuilder.toString();
@@ -255,6 +193,170 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public void numberButtonsPress(View view) {
+        if (mError.contentEquals(mInputStringBuilder) ||
+                mException.contentEquals(mInputStringBuilder) ||
+                mResultString.contentEquals(mInputStringBuilder)) deleteAllChars();
+        String lastChar = getLastChar();
+        if (lastChar.equals(mExclamation) || lastChar.equals(mCloseBracket)) return;
+        String buttonText = parseText(view);
+        String pi = getString(R.string.pi);
+        String e = getString(R.string.numberE);
+        if (buttonText.equals(pi) || buttonText.equals(e)) {
+            if (mDotPressed) {
+                return;
+            } else {
+                try {
+                    Integer.parseInt(lastChar);
+                    if (!mInputStringBuilder.toString().equals("0")) return;
+                } catch (NumberFormatException exception) {
+                    if (lastChar.equals(mCloseBracket)) {
+                        return;
+                    }
+                    mDotPressed = true;
+                }
+            }
+        }
+        if (buttonText.equals(pi)) buttonText = String.valueOf(Math.PI);
+        if (buttonText.equals(e)) buttonText = String.valueOf(Math.E);
+        deleteFirstCharIfZero();
+        mInputStringBuilder.append(buttonText);
+        updateResult();
+    }
+
+    public void actionButtonsPress(View view) {
+        if (mError.contentEquals(mInputStringBuilder) ||
+                mException.contentEquals(mInputStringBuilder)) return;
+        String lastChar = getLastChar();
+        String buttonText = parseText(view);
+        if ((lastChar.equals(mOpenBracket) && !buttonText.equals(mSubtraction)) ||
+                lastChar.equals(mDot) ||
+                (mInputStringBuilder.toString().equals("0") &&
+                        !buttonText.equals(mSubtraction))) return;
+        if (lastChar.equals(mSubtraction) && mInputStringBuilder.length() < 4) {
+            deleteLastChars(3);
+            mInputStringBuilder.append("0");
+            updateResult();
+            return;
+        }
+        if (lastChar.equals(mSubtraction)) {
+            String tempString = mInputStringBuilder.toString().substring(0, mInputStringBuilder.lastIndexOf(lastChar) - 1);
+            String secondFromEndChar = String.valueOf(tempString.charAt(tempString.length() - 1));
+            if (secondFromEndChar.equals(mOpenBracket)) {
+                if (!buttonText.equals(mSubtraction)) {
+                    deleteLastChars(3);
+                    updateResult();
+                }
+                return;
+            }
+        }
+        if (lastChar.equals(mMultiplication) ||
+                lastChar.equals(mDivision) ||
+                lastChar.equals(mSubtraction) ||
+                lastChar.equals(mAddition))
+            deleteLastChars(3);
+        deleteFirstCharIfZero();
+        mInputStringBuilder.append(" ").append(buttonText).append(" ");
+        updateResult();
+        mDotPressed = false;
+    }
+
+    public void additionalButtonsPress(View view) {
+        String buttonText = parseText(view);
+        if (mError.contentEquals(mInputStringBuilder) ||
+                mException.contentEquals(mInputStringBuilder) ||
+                mResultString.contentEquals(mInputStringBuilder)) {
+            if (!mResultString.contentEquals(mInputStringBuilder) ||
+                    (!buttonText.equals(mDegree) && !buttonText.equals(mExclamation))) {
+                deleteAllChars();
+            }
+        }
+        String lastChar = getLastChar();
+        if (lastChar.equals(mExclamation)) return;
+        try {
+            Integer.parseInt(lastChar);
+            if (!mInputStringBuilder.toString().equals("0") &&
+                    !buttonText.equals(mCloseBracket) &&
+                    !buttonText.equals(mExclamation) &&
+                    !buttonText.equals(mDegree)) return;
+        } catch (NumberFormatException ignored) {
+            if (lastChar.equals(mCloseBracket) &&
+                    !buttonText.equals(mCloseBracket) &&
+                    !buttonText.equals(mExclamation) &&
+                    !buttonText.equals(mDegree)) return;
+            if (lastChar.equals(mOpenBracket) &&
+                    (buttonText.equals(mDegree) ||
+                            buttonText.equals(mExclamation))) return;
+        }
+        if (buttonText.equals(mCloseBracket)) {
+            if (mOpenBracketCounter > 0 && !lastChar.equals(mOpenBracket)) {
+                mOpenBracketCounter--;
+            } else return;
+        }
+        deleteFirstCharIfZero();
+        mInputStringBuilder.append(buttonText);
+        if (!buttonText.equals(mOpenBracket) &&
+                !buttonText.equals(mCloseBracket) &&
+                !buttonText.equals(mExclamation)) {
+            mInputStringBuilder.append(mOpenBracket);
+            mOpenBracketCounter++;
+        }
+        if (buttonText.equals(mOpenBracket)) mOpenBracketCounter++;
+        updateResult();
+    }
+
+    public void dotButtonsPress(View view) {
+        if (mError.contentEquals(mInputStringBuilder) ||
+                mException.contentEquals(mInputStringBuilder) ||
+                mResultString.contentEquals(mInputStringBuilder)) deleteAllChars();
+        String lastChar = getLastChar();
+        if (lastChar.equals(mExclamation)) return;
+        String buttonText = parseText(view);
+        if (mDotPressed) {
+            return;
+        } else {
+            try {
+                Integer.parseInt(lastChar);
+            } catch (NumberFormatException e) {
+                if (!lastChar.equals(mCloseBracket) || !lastChar.equals(mExclamation)) {
+                    mInputStringBuilder.append("0");
+                } else {
+                    return;
+                }
+            }
+            mDotPressed = true;
+        }
+        mInputStringBuilder.append(buttonText);
+        updateResult();
+    }
+
+    private void deleteFirstCharIfZero() {
+        if (mInputStringBuilder.toString().equals("0")) deleteLastChars(1);
+    }
+
+    private void deleteAllChars() {
+        mOpenBracketCounter = 0;
+        mInputStringBuilder.setLength(0);
+        mInputStringBuilder.append('0');
+        updateResult();
+    }
+
+    private void deleteLastChars(int quantity) {
+        for (int i = 0; i < quantity; i++) {
+            if (mInputStringBuilder.length() > 0)
+                mInputStringBuilder.deleteCharAt(mInputStringBuilder.length() - 1);
+        }
+    }
+
+    private String parseText(View view) {
+        Button b = (Button) view;
+        return b.getText().toString();
+    }
+
+    private void updateResult() {
+        mResultView.setText(mInputStringBuilder.toString());
+    }
+
     private String makeExponent(String string) {
         if (string.contains("E")) {
             return string.substring(0, string.indexOf("E")) +
@@ -281,64 +383,10 @@ public class MainActivity extends AppCompatActivity {
         state.putString(KEY_EXCEPTION, mException);
     }
 
-    public void additionalButtonsPress(View view) {
-        if (mError.contentEquals(mInputStringBuilder) ||
-                mException.contentEquals(mInputStringBuilder) ||
-                mResultString.contentEquals(mInputStringBuilder)) deleteAllChars();
-        String buttonText = parseText(view);
-        String lastChar = getLastChar();
-        try {
-            Integer.parseInt(lastChar);
-            if (!mInputStringBuilder.toString().equals("0") && !buttonText.equals(mCloseBracket) && !buttonText.equals(mDegree))
-                return;
-        } catch (NumberFormatException ignored) {
-            if (lastChar.equals(mCloseBracket) && !buttonText.equals(mCloseBracket)) return;
-        }
-        if (buttonText.equals(mCloseBracket)) {
-            if (mOpenBracketCounter > 0 && !lastChar.equals(mOpenBracket)) {
-                mOpenBracketCounter--;
-            } else {
-                return;
-            }
-        }
-        deleteFirstChar();
-        mInputStringBuilder.append(buttonText);
-        if (!buttonText.equals(mOpenBracket) && !buttonText.equals(mCloseBracket) && !buttonText.equals(mDegree)) {
-            mInputStringBuilder.append(mOpenBracket);
-            mOpenBracketCounter++;
-        }
-        if (buttonText.equals(mOpenBracket)) mOpenBracketCounter++;
-        updateResult();
-    }
-
     private String getLastChar() {
         if (String.valueOf(mInputStringBuilder.charAt(mInputStringBuilder.length() - 1)).equals(" ")) {
             return String.valueOf(mInputStringBuilder.charAt(mInputStringBuilder.length() - 2));
         } else return String.valueOf(mInputStringBuilder.charAt(mInputStringBuilder.length() - 1));
-    }
-
-    public void dotButtonsPress(View view) {
-        if (mError.contentEquals(mInputStringBuilder) ||
-                mException.contentEquals(mInputStringBuilder) ||
-                mResultString.contentEquals(mInputStringBuilder)) deleteAllChars();
-        String lastChar = getLastChar();
-        String buttonText = parseText(view);
-        if (mDotPressed) {
-            return;
-        } else {
-            try {
-                Integer.parseInt(lastChar);
-            } catch (NumberFormatException e) {
-                if (!lastChar.equals(mCloseBracket)) {
-                    mInputStringBuilder.append("0");
-                } else {
-                    return;
-                }
-            }
-            mDotPressed = true;
-        }
-        mInputStringBuilder.append(buttonText);
-        updateResult();
     }
 
     public String getDot() {

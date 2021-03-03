@@ -62,17 +62,11 @@ public class Calculator {
                 return x;
             }
 
-            // Grammar:
-            // expression = term | expression `+` term | expression `-` term
-            // term = factor | term `*` factor | term `/` factor
-            // factor = `+` factor | `-` factor | `(` expression `)`
-            //        | number | functionName factor | factor `^` factor
-
             private double parseExpression() {
                 double x = parseTerm();
                 for (; ; ) {
-                    if (eat(mAddition)) x += parseTerm(); // addition
-                    else if (eat(mSubtraction)) x -= parseTerm(); // subtraction
+                    if (eat(mAddition)) x += parseTerm();
+                    else if (eat(mSubtraction)) x -= parseTerm();
                     else return x;
                 }
             }
@@ -80,25 +74,25 @@ public class Calculator {
             private double parseTerm() {
                 double x = parseFactor();
                 for (; ; ) {
-                    if (eat(mMultiplication)) x *= parseFactor(); // multiplication
-                    else if (eat(mDivision)) x /= parseFactor(); // division
+                    if (eat(mMultiplication)) x *= parseFactor();
+                    else if (eat(mDivision)) x /= parseFactor();
                     else return x;
                 }
             }
 
             private double parseFactor() {
-                if (eat(mAddition)) return parseFactor(); // unary plus
-                if (eat(mSubtraction)) return -parseFactor(); // unary minus
+                if (eat(mAddition)) return parseFactor();
+                if (eat(mSubtraction)) return -parseFactor();
 
                 double x;
                 int startPos = mPosition;
-                if (eat(mOpenBracket)) { // parentheses
+                if (eat(mOpenBracket)) {
                     x = parseExpression();
                     eat(mCloseBracket);
-                } else if ((mChar >= '0' && mChar <= '9') || mChar == mDot) { // numbers
+                } else if ((mChar >= '0' && mChar <= '9') || mChar == mDot) {
                     while ((mChar >= '0' && mChar <= '9') || mChar == mDot) nextChar();
                     x = Double.parseDouble(inputString.substring(startPos, mPosition));
-                } else if (mChar >= 'a' && mChar <= 'z') { // functions
+                } else if (mChar >= 'a' && mChar <= 'z') {
                     while (mChar >= 'a' && mChar <= 'z') nextChar();
                     String func = inputString.substring(startPos, mPosition);
                     x = parseFactor();
@@ -108,24 +102,22 @@ public class Calculator {
                     else if (func.equals(mLn)) x = Math.log(x);
                     else if (func.equals(mLog)) x = Math.log10(x);
                     else throw new RuntimeException("Unknown function: " + func);
-                } else {
-                    throw new RuntimeException("Unexpected char: " + (char) mChar);
+                } else if (eat(mSquareRoot)) x = Math.sqrt(parseFactor());
+                else {
+                    throw new RuntimeException("Unexpected char: " + (char) mChar + mChar);
                 }
 
-                if (eat(mSquareRoot)) x = Math.sqrt(x);
-                if (eat(mDegree)) x = Math.pow(x, parseFactor()); // exponentiation
+                if (eat(mDegree)) x = Math.pow(x, parseFactor());
+                if (eat('E')) x = Math.pow(x, parseFactor());
                 if (eat(mExclamation)) x = calculateFactorial(x);
 
                 return x;
             }
 
             private double calculateFactorial(double x) {
-                if (x <= 2) {
-                    return x;
-                }
+                if (x <= 2) return x;
                 return x * calculateFactorial(x - 1);
             }
-
         }.parse();
     }
 }
