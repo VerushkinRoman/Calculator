@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_columnSpan="3"
+    android:gravity="bottom">
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center">
+
+        <Button
+            android:id="@+id/number7"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/transparent"
+            android:text="@string/number7"
+            android:textColor="@color/black"
+            android:textSize="@dimen/key_text_size"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/number8"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/transparent"
+            android:text="@string/number8"
+            android:textColor="@color/black"
+            android:textSize="@dimen/key_text_size"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/number9"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/transparent"
+            android:text="@string/number9"
+            android:textColor="@color/black"
+            android:textSize="@dimen/key_text_size"
+            android:textStyle="bold" />
+    </TableRow>
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center">
+
+        <Button
+            android:id="@+id/number4"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/transparent"
+            android:text="@string/number4"
+            android:textColor="@color/black"
+            android:textSize="@dimen/key_text_size"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/number5"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/transparent"
+            android:text="@string/number5"
+            android:textColor="@color/black"
+            android:textSize="@dimen/key_text_size"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/number6"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/transparent"
+            android:text="@string/number6"
+            android:textColor="@color/black"
+            android:textSize="@dimen/key_text_size"
+            android:textStyle="bold" />
+    </TableRow>
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center">
+
+        <Button
+            android:id="@+id/number1"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/transparent"
+            android:text="@string/number1"
+            android:textColor="@color/black"
+            android:textSize="@dimen/key_text_size"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/number2"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/transparent"
+            android:text="@string/number2"
+            android:textColor="@color/black"
+            android:textSize="@dimen/key_text_size"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/number3"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/transparent"
+            android:text="@string/number3"
+            android:textColor="@color/black"
+            android:textSize="@dimen/key_text_size"
+            android:textStyle="bold" />
+    </TableRow>
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center">
+
+        <Button
+            android:id="@+id/number0"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/transparent"
+            android:text="@string/number0"
+            android:textColor="@color/black"
+            android:textSize="@dimen/key_text_size"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/numberDot"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/transparent"
+            android:text="@string/numberDot"
+            android:textColor="@color/black"
+            android:textSize="@dimen/key_text_size"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/numberEqual"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/transparent"
+            android:text="@string/numberEqual"
+            android:textColor="@color/black"
+            android:textSize="@dimen/key_text_size"
+            android:textStyle="bold" />
+    </TableRow>
+</TableLayout>

@@ -18,11 +18,4 @@ public class MainActivity extends AppCompatActivity{
         setContentView(R.layout.activity_main);
     }
 
-    public void changeLayout(View view) {
-        setContentView(R.layout.activity_additional);
-    }
-
-    public void changeLayout2(View view) {
-        setContentView(R.layout.activity_main);
-    }
 }
