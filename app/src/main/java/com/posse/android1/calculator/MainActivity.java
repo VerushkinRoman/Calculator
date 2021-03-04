@@ -1,14 +1,18 @@
 package com.posse.android1.calculator;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.annotation.SuppressLint;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -16,19 +20,25 @@ import java.math.RoundingMode;
 public class MainActivity extends AppCompatActivity {
 
     private static final int HOLD_DELAY = 500;
-    private static final String KEY_INPUT_STRING = MainActivity.class.getCanonicalName() + "inputString";
-    private static final String KEY_BRACKET_COUNTER = MainActivity.class.getCanonicalName() + "mOpenBracketCounter";
-    private static final String KEY_PRESSED_DOT = MainActivity.class.getCanonicalName() + "mDotPressed";
-    private static final String KEY_RESULT_STRING = MainActivity.class.getCanonicalName() + "mResultString";
-    private static final String KEY_EXCEPTION = MainActivity.class.getCanonicalName() + "mException";
+    private static final String KEY_INPUT_STRING =
+            MainActivity.class.getCanonicalName() + "mInputString";
+    private static final String KEY_BRACKET_COUNTER =
+            MainActivity.class.getCanonicalName() + "mOpenBracketCounter";
+    private static final String KEY_PRESSED_DOT =
+            MainActivity.class.getCanonicalName() + "mDotPressed";
+    private static final String KEY_RESULT_STRING =
+            MainActivity.class.getCanonicalName() + "mResultString";
+    private static final String KEY_EXCEPTION =
+            MainActivity.class.getCanonicalName() + "mException";
 
     private final StringBuilder mInputStringBuilder = new StringBuilder("0");
-    private final String mError = "Деление на 0 или переполнение!";
-
-    private View.OnTouchListener mDeleteButtonListener;
+    private String mError;
 
     private Calculator mCalculator;
     private TextView mResultView;
+    private View mKeyboard;
+    private View mActions;
+    private ImageButton mExpandButton;
 
     private String mDot;
     private String mOpenBracket;
@@ -49,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
     private String mResultString = "";
     private String mException = "";
 
-    private long lastTime;
+    private long mLastTimeWhenBackspacePressed;
     private int mOpenBracketCounter;
     private boolean mDotPressed;
 
@@ -88,18 +98,48 @@ public class MainActivity extends AppCompatActivity {
         mAddition = getString(R.string.addition);
         mMultiplication = getString(R.string.multiplication);
 
+        mKeyboard = findViewById(R.id.keyboard);
+        mActions = findViewById(R.id.actions);
+        mExpandButton = findViewById(R.id.openClose);
+
+        mError = getString(R.string.calculation_error);
+
         mCalculator = new Calculator(this);
 
-        Button mButtonDelete = findViewById(R.id.delete);
-        initDeleteButtonListener();
-        mButtonDelete.setOnTouchListener(mDeleteButtonListener);
+        initSlidingPanel();
+        initDeleteButton();
+    }
+
+    private void initSlidingPanel() {
+        if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+            SlidingUpPanelLayout mSlidingPaneLayout = findViewById(R.id.slidingLayout);
+            mSlidingPaneLayout.addPanelSlideListener(new SlidingUpPanelLayout.PanelSlideListener() {
+                @Override
+                public void onPanelSlide(View panel, float slideOffset) {
+                    if (slideOffset > 0) {
+                        mKeyboard.setVisibility(View.INVISIBLE);
+                        mActions.setVisibility(View.INVISIBLE);
+                        mExpandButton.setImageResource(android.R.drawable.arrow_down_float);
+                    } else {
+                        mKeyboard.setVisibility(View.VISIBLE);
+                        mActions.setVisibility(View.VISIBLE);
+                        mExpandButton.setImageResource(android.R.drawable.arrow_up_float);
+                    }
+                }
+
+                @Override
+                public void onPanelStateChanged(View panel, SlidingUpPanelLayout.PanelState previousState, SlidingUpPanelLayout.PanelState newState) {
+                }
+            });
+        }
     }
 
     @SuppressLint("ClickableViewAccessibility")
-    private void initDeleteButtonListener() {
-        mDeleteButtonListener = (v, event) -> {
+    private void initDeleteButton() {
+        Button mButtonDelete = findViewById(R.id.delete);
+        mButtonDelete.setOnTouchListener((v, event) -> {
             if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                lastTime = System.currentTimeMillis();
+                mLastTimeWhenBackspacePressed = System.currentTimeMillis();
                 if (mError.contentEquals(mInputStringBuilder) || mException.contentEquals(mInputStringBuilder)) {
                     deleteAllChars();
                     return false;
@@ -134,6 +174,7 @@ public class MainActivity extends AppCompatActivity {
                             lastChar.equals(mMultiplication) || lastChar.equals(mDivision))
                         deleteLastChars(2);
                     deleteLastChars(1);
+                    if (mInputStringBuilder.length() == 0) mInputStringBuilder.append("0");
                 } else {
                     deleteAllChars();
                 }
@@ -141,14 +182,14 @@ public class MainActivity extends AppCompatActivity {
             if (event.getAction() == MotionEvent.ACTION_UP ||
                     event.getAction() == MotionEvent.ACTION_CANCEL ||
                     event.getAction() == MotionEvent.ACTION_MOVE) {
-                if (System.currentTimeMillis() - lastTime > HOLD_DELAY) {
+                if (System.currentTimeMillis() - mLastTimeWhenBackspacePressed > HOLD_DELAY) {
                     deleteAllChars();
                     mDotPressed = false;
                 }
             }
             updateResult();
             return false;
-        };
+        });
     }
 
     public void equalsPress(View view) {
@@ -275,10 +316,12 @@ public class MainActivity extends AppCompatActivity {
         if (lastChar.equals(mExclamation)) return;
         try {
             Integer.parseInt(lastChar);
-            if (!mInputStringBuilder.toString().equals("0") &&
+            if ((!mInputStringBuilder.toString().equals("0") &&
                     !buttonText.equals(mCloseBracket) &&
                     !buttonText.equals(mExclamation) &&
-                    !buttonText.equals(mDegree)) return;
+                    !buttonText.equals(mDegree)) ||
+                    (mInputStringBuilder.toString().equals("0") && (buttonText.equals(mDegree) ||
+                            buttonText.equals(mExclamation)))) return;
         } catch (NumberFormatException ignored) {
             if (lastChar.equals(mCloseBracket) &&
                     !buttonText.equals(mCloseBracket) &&

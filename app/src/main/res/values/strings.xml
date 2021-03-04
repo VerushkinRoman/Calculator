@@ -29,4 +29,6 @@
     <string name="openBracket">(</string>
     <string name="closeBracket">)</string>
     <string name="exclamation">!</string>
+    <string name="expand_collapse_button_description">Expand/Collapse</string>
+    <string name="calculation_error">Деление на 0 или переполнение!</string>
 </resources>

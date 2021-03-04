@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_columnSpan="3"
@@ -8,7 +9,8 @@
     <TableRow
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center|right">
+        android:gravity="center|right"
+        tools:ignore="RtlHardcoded">
 
         <Button
             android:id="@+id/sin"
@@ -16,12 +18,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/transparent"
+            android:onClick="additionalButtonsPress"
+            android:paddingTop="0dp"
             android:text="@string/sin"
             android:textAllCaps="false"
             android:textColor="@color/black"
             android:textSize="@dimen/key_text_size"
-            android:textStyle="bold"
-            android:onClick="additionalButtonsPress"/>
+            android:textStyle="bold" />
 
         <Button
             android:id="@+id/cos"
@@ -29,12 +32,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/transparent"
+            android:onClick="additionalButtonsPress"
+            android:paddingTop="0dp"
             android:text="@string/cos"
             android:textAllCaps="false"
             android:textColor="@color/black"
             android:textSize="@dimen/key_text_size"
-            android:textStyle="bold"
-            android:onClick="additionalButtonsPress"/>
+            android:textStyle="bold" />
 
         <Button
             android:id="@+id/tan"
@@ -42,18 +46,20 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/transparent"
+            android:onClick="additionalButtonsPress"
+            android:paddingTop="0dp"
             android:text="@string/tan"
             android:textAllCaps="false"
             android:textColor="@color/black"
             android:textSize="@dimen/key_text_size"
-            android:textStyle="bold"
-            android:onClick="additionalButtonsPress"/>
+            android:textStyle="bold" />
     </TableRow>
 
     <TableRow
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center|right">
+        android:gravity="center|right"
+        tools:ignore="RtlHardcoded">
 
         <Button
             android:id="@+id/naturalLogarithm"
@@ -61,12 +67,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/transparent"
+            android:onClick="additionalButtonsPress"
             android:text="@string/naturalLogarithm"
             android:textAllCaps="false"
             android:textColor="@color/black"
             android:textSize="@dimen/key_text_size"
-            android:textStyle="bold"
-            android:onClick="additionalButtonsPress"/>
+            android:textStyle="bold" />
 
         <Button
             android:id="@+id/logarithm"
@@ -74,12 +80,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/transparent"
+            android:onClick="additionalButtonsPress"
             android:text="@string/logarithm"
             android:textAllCaps="false"
             android:textColor="@color/black"
             android:textSize="@dimen/key_text_size"
-            android:textStyle="bold"
-            android:onClick="additionalButtonsPress"/>
+            android:textStyle="bold" />
 
         <Button
             android:id="@+id/squareRoot"
@@ -87,18 +93,19 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/transparent"
+            android:onClick="additionalButtonsPress"
             android:text="@string/squareRoot"
             android:textAllCaps="false"
             android:textColor="@color/black"
             android:textSize="@dimen/key_text_size"
-            android:textStyle="bold"
-            android:onClick="additionalButtonsPress"/>
+            android:textStyle="bold" />
     </TableRow>
 
     <TableRow
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center|right">
+        android:gravity="center|right"
+        tools:ignore="RtlHardcoded">
 
         <Button
             android:id="@+id/pi"
@@ -106,12 +113,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/transparent"
+            android:onClick="numberButtonsPress"
             android:text="@string/pi"
             android:textAllCaps="false"
             android:textColor="@color/black"
             android:textSize="@dimen/key_text_size"
-            android:textStyle="bold"
-            android:onClick="numberButtonsPress"/>
+            android:textStyle="bold" />
 
         <Button
             android:id="@+id/numberE"
@@ -119,12 +126,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/transparent"
+            android:onClick="numberButtonsPress"
             android:text="@string/numberE"
             android:textAllCaps="false"
             android:textColor="@color/black"
             android:textSize="@dimen/key_text_size"
-            android:textStyle="bold"
-            android:onClick="numberButtonsPress"/>
+            android:textStyle="bold" />
 
         <Button
             android:id="@+id/degree"
@@ -132,18 +139,19 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/transparent"
+            android:onClick="additionalButtonsPress"
             android:text="@string/degree"
             android:textAllCaps="false"
             android:textColor="@color/black"
             android:textSize="@dimen/key_text_size"
-            android:textStyle="bold"
-            android:onClick="additionalButtonsPress"/>
+            android:textStyle="bold" />
     </TableRow>
 
     <TableRow
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center|right">
+        android:gravity="center|right"
+        tools:ignore="RtlHardcoded">
 
         <Button
             android:id="@+id/openBracket"
@@ -151,12 +159,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/transparent"
+            android:onClick="additionalButtonsPress"
             android:text="@string/openBracket"
             android:textAllCaps="false"
             android:textColor="@color/black"
             android:textSize="@dimen/key_text_size"
-            android:textStyle="bold"
-            android:onClick="additionalButtonsPress"/>
+            android:textStyle="bold" />
 
         <Button
             android:id="@+id/closeBracket"
@@ -164,12 +172,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/transparent"
+            android:onClick="additionalButtonsPress"
             android:text="@string/closeBracket"
             android:textAllCaps="false"
             android:textColor="@color/black"
             android:textSize="@dimen/key_text_size"
-            android:textStyle="bold"
-            android:onClick="additionalButtonsPress"/>
+            android:textStyle="bold" />
 
         <Button
             android:id="@+id/exclamation"
@@ -177,11 +185,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/transparent"
+            android:onClick="additionalButtonsPress"
             android:text="@string/exclamation"
             android:textAllCaps="false"
             android:textColor="@color/black"
             android:textSize="@dimen/key_text_size"
-            android:textStyle="bold"
-            android:onClick="additionalButtonsPress"/>
+            android:textStyle="bold" />
     </TableRow>
 </TableLayout>
