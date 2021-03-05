@@ -104,7 +104,7 @@ public class Calculator {
                     else throw new RuntimeException("Unknown function: " + func);
                 } else if (eat(mSquareRoot)) x = Math.sqrt(parseFactor());
                 else {
-                    throw new RuntimeException("Unexpected char: " + (char) mChar + mChar);
+                    throw new RuntimeException("Unexpected char: " + (char) mChar);
                 }
 
                 if (eat(mDegree)) x = Math.pow(x, parseFactor());

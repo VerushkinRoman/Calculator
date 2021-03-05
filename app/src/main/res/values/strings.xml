@@ -1,34 +1,35 @@
 <resources>
     <string name="app_name">Calculator</string>
-    <string name="number7">7</string>
-    <string name="number8">8</string>
-    <string name="number9">9</string>
-    <string name="number6">6</string>
-    <string name="number5">5</string>
-    <string name="number4">4</string>
-    <string name="number3">3</string>
-    <string name="number2">2</string>
-    <string name="number1">1</string>
-    <string name="number0">0</string>
-    <string name="numberDot">.</string>
-    <string name="numberEqual">=</string>
-    <string name="division">/</string>
-    <string name="multiplication">*</string>
-    <string name="subtraction">-</string>
-    <string name="addition">+</string>
-    <string name="background">background</string>
-    <string name="sin">sin</string>
-    <string name="cos">cos</string>
-    <string name="tan">tan</string>
-    <string name="naturalLogarithm">ln</string>
-    <string name="logarithm">log</string>
-    <string name="squareRoot">√</string>
-    <string name="pi">π</string>
-    <string name="numberE">e</string>
-    <string name="degree">^</string>
-    <string name="openBracket">(</string>
-    <string name="closeBracket">)</string>
-    <string name="exclamation">!</string>
+    <string name="number7" translatable="false">7</string>
+    <string name="number8" translatable="false">8</string>
+    <string name="number9" translatable="false">9</string>
+    <string name="number6" translatable="false">6</string>
+    <string name="number5" translatable="false">5</string>
+    <string name="number4" translatable="false">4</string>
+    <string name="number3" translatable="false">3</string>
+    <string name="number2" translatable="false">2</string>
+    <string name="number1" translatable="false">1</string>
+    <string name="number0" translatable="false">0</string>
+    <string name="numberDot" translatable="false">.</string>
+    <string name="numberEqual" translatable="false">=</string>
+    <string name="division" translatable="false">/</string>
+    <string name="multiplication" translatable="false">*</string>
+    <string name="subtraction" translatable="false">-</string>
+    <string name="addition" translatable="false">+</string>
+    <string name="background" translatable="false">background</string>
+    <string name="sin" translatable="false">sin</string>
+    <string name="cos" translatable="false">cos</string>
+    <string name="tan" translatable="false">tan</string>
+    <string name="naturalLogarithm" translatable="false">ln</string>
+    <string name="logarithm" translatable="false">log</string>
+    <string name="squareRoot" translatable="false">√</string>
+    <string name="pi" translatable="false">π</string>
+    <string name="numberE" translatable="false">e</string>
+    <string name="degree" translatable="false">^</string>
+    <string name="openBracket" translatable="false">(</string>
+    <string name="closeBracket" translatable="false">)</string>
+    <string name="exclamation" translatable="false">!</string>
     <string name="expand_collapse_button_description">Expand/Collapse</string>
-    <string name="calculation_error">Деление на 0 или переполнение!</string>
+    <string name="calculation_error">Division by 0 or Overloading!</string>
+    <string name="exceptionString">\". Input value is: \"</string>
 </resources>

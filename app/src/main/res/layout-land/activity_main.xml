@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/mainLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-
 
     <ImageView
         android:id="@+id/background"
@@ -36,7 +34,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/additional"
         app:layout_constraintStart_toEndOf="@+id/keyboard"
-        app:layout_constraintTop_toBottomOf="@+id/nestedScrollView2" />
+        app:layout_constraintTop_toBottomOf="@+id/resultView" />
 
     <include
         android:id="@+id/additional"
@@ -46,41 +44,16 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/actions"
-        app:layout_constraintTop_toBottomOf="@+id/nestedScrollView2" />
+        app:layout_constraintTop_toBottomOf="@+id/resultView" />
 
-    <androidx.core.widget.NestedScrollView
-        android:id="@+id/nestedScrollView2"
+    <include
+        android:id="@+id/resultView"
+        layout="@layout/result_layout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:fillViewport="true"
-        android:paddingStart="@dimen/result_text_size"
-        android:paddingEnd="@dimen/result_text_size"
         app:layout_constraintBottom_toTopOf="@+id/keyboard"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1" />
-
-            <TextView
-                android:id="@+id/result"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:backgroundTint="@color/transparent"
-                android:textAlignment="textEnd"
-                android:textColor="@color/black"
-                android:textSize="@dimen/result_text_size"
-                android:textStyle="bold" />
-        </LinearLayout>
-    </androidx.core.widget.NestedScrollView>
-
+        app:layout_constraintVertical_bias="0.0" />
 </androidx.constraintlayout.widget.ConstraintLayout>

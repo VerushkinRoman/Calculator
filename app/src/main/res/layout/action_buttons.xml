@@ -10,63 +10,36 @@
         android:layout_height="wrap_content"
         android:layout_weight="1" />
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/delete"
-        style="@style/Widget.AppCompat.Button.Borderless"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:backgroundTint="@color/transparent"
+        style="@style/ActionButtonsStyle"
         app:icon="@android:drawable/ic_input_delete"
         app:iconGravity="textStart"
-        app:iconTint="@color/black" />
+        app:iconTint="@color/text_color" />
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/division"
-        style="@style/Widget.AppCompat.Button.Borderless"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:backgroundTint="@color/transparent"
+        style="@style/ActionButtonsStyle"
         android:onClick="actionButtonsPress"
-        android:text="@string/division"
-        android:textColor="@color/black"
-        android:textSize="@dimen/action_key_text_size"
-        android:textStyle="bold" />
+        android:text="@string/division" />
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/multiplication"
-        style="@style/Widget.AppCompat.Button.Borderless"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:backgroundTint="@color/transparent"
+        style="@style/ActionButtonsStyle"
         android:onClick="actionButtonsPress"
-        android:text="@string/multiplication"
-        android:textColor="@color/black"
-        android:textSize="@dimen/action_key_text_size"
-        android:textStyle="bold" />
+        android:text="@string/multiplication" />
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/subtraction"
-        style="@style/Widget.AppCompat.Button.Borderless"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:backgroundTint="@color/transparent"
+        style="@style/ActionButtonsStyle"
         android:onClick="actionButtonsPress"
-        android:text="@string/subtraction"
-        android:textColor="@color/black"
-        android:textSize="@dimen/action_key_text_size"
-        android:textStyle="bold" />
+        android:text="@string/subtraction" />
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/addition"
-        style="@style/Widget.AppCompat.Button.Borderless"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:backgroundTint="@color/transparent"
+        style="@style/ActionButtonsStyle"
         android:onClick="actionButtonsPress"
-        android:text="@string/addition"
-        android:textColor="@color/black"
-        android:textSize="@dimen/action_key_text_size"
-        android:textStyle="bold" />
+        android:text="@string/addition" />
 
     <Space
         android:layout_width="match_parent"

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="key_text_size">90sp</dimen>
+    <dimen name="action_key_text_size">60sp</dimen>
+    <dimen name="result_text_size">120sp</dimen>
+    <dimen name="sliding_panel_height">105sp</dimen>
+</resources>
