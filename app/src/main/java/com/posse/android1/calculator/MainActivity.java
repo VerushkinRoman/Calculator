@@ -1,7 +1,11 @@
 package com.posse.android1.calculator;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
 import android.view.MotionEvent;
@@ -12,32 +16,23 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements AppConstants {
 
     private static final int HOLD_DELAY = 500;
-    private static final String KEY_INPUT_STRING =
-            MainActivity.class.getCanonicalName() + "mInputString";
-    private static final String KEY_BRACKET_COUNTER =
-            MainActivity.class.getCanonicalName() + "mOpenBracketCounter";
-    private static final String KEY_PRESSED_DOT =
-            MainActivity.class.getCanonicalName() + "mDotPressed";
-    private static final String KEY_RESULT_STRING =
-            MainActivity.class.getCanonicalName() + "mResultString";
-    private static final String KEY_EXCEPTION =
-            MainActivity.class.getCanonicalName() + "mException";
-    private static final String KEY_NUMBERS_COUNTER =
-            MainActivity.class.getCanonicalName() + "mInputNumbersCounter";
+    private static final int REQUEST_CODE_SETTING_ACTIVITY = 1;
 
     private final StringBuilder mInputStringBuilder = new StringBuilder("0");
     private String mError;
 
     private Calculator mCalculator;
+    private SharedPreferences mSettings;
     private TextView mResultView;
     private View mKeyboard;
     private View mActions;
@@ -67,6 +62,10 @@ public class MainActivity extends AppCompatActivity {
     private boolean mDotPressed;
     private int mInputNumbersCounter;
 
+    private boolean mIsFollowSystem;
+    private boolean mIsDarkMode;
+    private int mLastDayNightMode;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,7 +79,10 @@ public class MainActivity extends AppCompatActivity {
             mResultString = savedInstanceState.getString(KEY_RESULT_STRING);
             mException = savedInstanceState.getString(KEY_EXCEPTION);
             mInputNumbersCounter = savedInstanceState.getInt(KEY_NUMBERS_COUNTER);
+        } else {
+            initColorMode();
         }
+        mLastDayNightMode = AppCompatDelegate.getDefaultNightMode();
         updateResult();
     }
 
@@ -111,9 +113,29 @@ public class MainActivity extends AppCompatActivity {
         mError = getString(R.string.calculation_error);
 
         mCalculator = new Calculator(this);
+        mSettings = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        mIsDarkMode = mSettings.getBoolean(KEY_DARK_MODE, false);
+        if (Build.VERSION.SDK_INT >= NIGHT_THEME_SDK)
+            mIsFollowSystem = mSettings.getBoolean(KEY_FOLLOW_SYSTEM, true);
 
         initSlidingPanel();
         initDeleteButton();
+    }
+
+    private void initColorMode() {
+        if (Build.VERSION.SDK_INT >= NIGHT_THEME_SDK) {
+            if (mIsFollowSystem) {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
+            }
+        }
+        if (!mIsFollowSystem) {
+            if (mIsDarkMode) {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+            } else {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+            }
+        }
+        getDelegate().applyDayNight();
     }
 
     private void initSlidingPanel() {
@@ -222,7 +244,7 @@ public class MainActivity extends AppCompatActivity {
         if (!isANumber(lastChar)) {
             if (!lastChar.equals(mCloseBracket) && !lastChar.equals(mExclamation)) return;
         }
-        String ifError = mInputStringBuilder.toString();
+        String errorValue = mInputStringBuilder.toString();
         try {
             String calculateString = mInputStringBuilder.toString();
             if (!calculateString.equals(makeExponent(calculateString))) {
@@ -251,7 +273,7 @@ public class MainActivity extends AppCompatActivity {
             } else {
                 mException = exception.getMessage();
                 mInputStringBuilder.append(mException);
-                mResultView.setText(String.format("%s%s%s", mException, getString(R.string.exceptionString), ifError));
+                mResultView.setText(String.format("%s%s%s", mException, getString(R.string.exceptionString), errorValue));
             }
             mInputNumbersCounter = 0;
         }
@@ -377,8 +399,7 @@ public class MainActivity extends AppCompatActivity {
         mInputNumbersCounter = 0;
     }
 
-    public void dotButtonsPress(View view)
-    {
+    public void dotButtonsPress(View view) {
         if (mError.contentEquals(mInputStringBuilder) ||
                 mException.contentEquals(mInputStringBuilder) ||
                 mResultString.contentEquals(mInputStringBuilder)) deleteAllChars();
@@ -400,6 +421,36 @@ public class MainActivity extends AppCompatActivity {
         mInputStringBuilder.append(buttonText);
         updateResult();
         mInputNumbersCounter = 0;
+    }
+
+    public void settingsButtonsPress(View view) {
+        Intent runSettings = new Intent(MainActivity.this, Settings.class);
+        runSettings.putExtra(KEY_FOLLOW_SYSTEM, mIsFollowSystem);
+        startActivityForResult(runSettings, REQUEST_CODE_SETTING_ACTIVITY);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode != REQUEST_CODE_SETTING_ACTIVITY) {
+            super.onActivityResult(requestCode, resultCode, data);
+            return;
+        }
+        if (resultCode == RESULT_OK) {
+            mIsDarkMode = data.getExtras().getBoolean(KEY_DARK_MODE);
+            mIsFollowSystem = data.getExtras().getBoolean(KEY_FOLLOW_SYSTEM);
+            SharedPreferences.Editor editor = mSettings.edit();
+            editor.putBoolean(KEY_DARK_MODE, mIsDarkMode);
+            editor.putBoolean(KEY_FOLLOW_SYSTEM, mIsFollowSystem);
+            editor.apply();
+        }
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        if (AppCompatDelegate.getDefaultNightMode() != mLastDayNightMode) {
+            recreate();
+        }
     }
 
     private void deleteFirstCharIfZero() {

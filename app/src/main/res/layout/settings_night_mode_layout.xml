@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/settingsLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingStart="@dimen/action_key_text_size"
+    android:paddingTop="@dimen/action_key_text_size"
+    android:paddingEnd="@dimen/action_key_text_size"
+    android:paddingBottom="@dimen/action_key_text_size"
+    tools:context=".Settings">
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/themeText"
+        style="@style/SettingsStyle"
+        android:text="@string/theme_mode"
+        android:textAlignment="textStart" />
+
+    <RadioGroup
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.radiobutton.MaterialRadioButton
+            android:id="@+id/dayRadio"
+            style="@style/SettingsStyle"
+            android:onClick="clickedDayNightRadio"
+            android:padding="0dp"
+            android:text="@string/day_theme" />
+
+        <com.google.android.material.radiobutton.MaterialRadioButton
+            android:id="@+id/nightRadio"
+            style="@style/SettingsStyle"
+            android:onClick="clickedDayNightRadio"
+            android:padding="0dp"
+            android:text="@string/night_theme" />
+
+    </RadioGroup>
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/buttonCloseSettings"
+        style="@style/SettingsStyle"
+        android:onClick="btnClosePressed"
+        android:text="@string/close_settings" />
+
+</LinearLayout>

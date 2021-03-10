@@ -17,4 +17,8 @@
     <style name="ActionButtonsStyle" parent="ButtonsStyle">
         <item name="android:textSize">@dimen/action_key_text_size</item>
     </style>
+
+    <style name="SettingsStyle" parent="AdditionButtonsStyle">
+        <item name="android:textSize">@dimen/action_key_text_size</item>
+    </style>
 </resources>
