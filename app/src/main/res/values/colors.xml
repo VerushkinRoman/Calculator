@@ -10,4 +10,5 @@
     <color name="text_color">#FF000000</color>
     <color name="overlay_transparent">#CCFFFFFF</color>
     <color name="transparent">#00FFFFFF</color>
+    <color name="result_color">#FF474747</color>
 </resources>

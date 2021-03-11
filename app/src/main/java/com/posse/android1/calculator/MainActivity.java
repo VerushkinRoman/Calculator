@@ -33,6 +33,7 @@ public class MainActivity extends AppCompatActivity implements AppConstants {
 
     private Calculator mCalculator;
     private SharedPreferences mSettings;
+    private TextView mInputView;
     private TextView mResultView;
     private View mKeyboard;
     private View mActions;
@@ -54,7 +55,7 @@ public class MainActivity extends AppCompatActivity implements AppConstants {
     private String mSubtraction;
     private String mAddition;
 
-    private String mResultString = "";
+    private String mInputStringWithResult = "";
     private String mException = "";
 
     private long mLastTimeWhenBackspacePressed;
@@ -76,7 +77,7 @@ public class MainActivity extends AppCompatActivity implements AppConstants {
             mInputStringBuilder.append(savedInstanceState.getString(KEY_INPUT_STRING));
             mDotPressed = savedInstanceState.getBoolean(KEY_PRESSED_DOT);
             mOpenBracketCounter = savedInstanceState.getInt(KEY_BRACKET_COUNTER);
-            mResultString = savedInstanceState.getString(KEY_RESULT_STRING);
+            mInputStringWithResult = savedInstanceState.getString(KEY_RESULT_STRING);
             mException = savedInstanceState.getString(KEY_EXCEPTION);
             mInputNumbersCounter = savedInstanceState.getInt(KEY_NUMBERS_COUNTER);
         } else {
@@ -102,6 +103,9 @@ public class MainActivity extends AppCompatActivity implements AppConstants {
         mSubtraction = getString(R.string.subtraction);
         mAddition = getString(R.string.addition);
         mMultiplication = getString(R.string.multiplication);
+
+        mInputView = findViewById(R.id.input);
+        mInputView.setMovementMethod(new ScrollingMovementMethod());
 
         mResultView = findViewById(R.id.result);
         mResultView.setMovementMethod(new ScrollingMovementMethod());
@@ -236,44 +240,32 @@ public class MainActivity extends AppCompatActivity implements AppConstants {
     }
 
     public void equalsPress(View view) {
+        String lastChar = getLastChar();
         if (mError.contentEquals(mInputStringBuilder) ||
                 mException.contentEquals(mInputStringBuilder) ||
-                mResultString.contentEquals(mInputStringBuilder) ||
-                mOpenBracketCounter != 0) return;
-        String lastChar = getLastChar();
-        if (!isANumber(lastChar)) {
-            if (!lastChar.equals(mCloseBracket) && !lastChar.equals(mExclamation)) return;
+                mInputStringWithResult.contentEquals(mInputStringBuilder) ||
+                (!isANumber(lastChar) && !lastChar.equals(mExclamation))) return;
+        for (int i = 0; i < mOpenBracketCounter; i++) {
+            mInputStringBuilder.append(mCloseBracket);
         }
         String errorValue = mInputStringBuilder.toString();
         try {
-            String calculateString = mInputStringBuilder.toString();
-            if (!calculateString.equals(makeExponent(calculateString))) {
-                calculateString = makeExponent(calculateString);
-            }
-            double result = mCalculator.calculate(calculateString);
+            StringBuilder tempResult = calculateResult(mInputStringBuilder);
             mInputStringBuilder.setLength(0);
-            mResultString = String.valueOf(result);
-            if (String.valueOf(mResultString.charAt(mResultString.length() - 2)).equals(mDot) &&
-                    String.valueOf(mResultString.charAt(mResultString.length() - 1)).equals("0")) {
-                mInputStringBuilder.append((int) result);
-                mResultString = String.valueOf((int) result);
-            } else {
-                int intPart = (int) result;
-                result = round(result, 11 - Integer.toString(intPart).length());
-                mInputStringBuilder.append(result);
-                mResultString = String.valueOf(result);
-                mDotPressed = true;
-            }
+            mInputStringBuilder.append(tempResult);
+            mInputStringWithResult = mInputStringBuilder.toString();
+            mDotPressed = true;
+            mOpenBracketCounter = 0;
             updateResult();
         } catch (Exception exception) {
             mInputStringBuilder.setLength(0);
             if (exception instanceof NumberFormatException) {
-                mResultView.setText(mError);
+                mInputView.setText(mError);
                 mInputStringBuilder.append(mError);
             } else {
                 mException = exception.getMessage();
                 mInputStringBuilder.append(mException);
-                mResultView.setText(String.format("%s%s%s", mException, getString(R.string.exceptionString), errorValue));
+                mInputView.setText(String.format("%s%s%s", mException, getString(R.string.exceptionString), errorValue));
             }
             mInputNumbersCounter = 0;
         }
@@ -283,7 +275,7 @@ public class MainActivity extends AppCompatActivity implements AppConstants {
         if (mInputNumbersCounter > String.valueOf(Double.MAX_VALUE).length()) return;
         if (mError.contentEquals(mInputStringBuilder) ||
                 mException.contentEquals(mInputStringBuilder) ||
-                mResultString.contentEquals(mInputStringBuilder)) deleteAllChars();
+                mInputStringWithResult.contentEquals(mInputStringBuilder)) deleteAllChars();
         String lastChar = getLastChar();
         if (lastChar.equals(mExclamation) || lastChar.equals(mCloseBracket)) return;
         String buttonText = parseText(view);
@@ -351,8 +343,8 @@ public class MainActivity extends AppCompatActivity implements AppConstants {
         String buttonText = parseText(view);
         if (mError.contentEquals(mInputStringBuilder) ||
                 mException.contentEquals(mInputStringBuilder) ||
-                mResultString.contentEquals(mInputStringBuilder)) {
-            if (!mResultString.contentEquals(mInputStringBuilder) ||
+                mInputStringWithResult.contentEquals(mInputStringBuilder)) {
+            if (!mInputStringWithResult.contentEquals(mInputStringBuilder) ||
                     (!buttonText.equals(mDegree) && !buttonText.equals(mExclamation))) {
                 deleteAllChars();
             }
@@ -402,7 +394,7 @@ public class MainActivity extends AppCompatActivity implements AppConstants {
     public void dotButtonsPress(View view) {
         if (mError.contentEquals(mInputStringBuilder) ||
                 mException.contentEquals(mInputStringBuilder) ||
-                mResultString.contentEquals(mInputStringBuilder)) deleteAllChars();
+                mInputStringWithResult.contentEquals(mInputStringBuilder)) deleteAllChars();
         String lastChar = getLastChar();
         if (lastChar.equals(mExclamation)) return;
         String buttonText = parseText(view);
@@ -427,6 +419,27 @@ public class MainActivity extends AppCompatActivity implements AppConstants {
         Intent runSettings = new Intent(MainActivity.this, Settings.class);
         runSettings.putExtra(KEY_FOLLOW_SYSTEM, mIsFollowSystem);
         startActivityForResult(runSettings, REQUEST_CODE_SETTING_ACTIVITY);
+    }
+
+    private StringBuilder calculateResult(StringBuilder expression) throws NumberFormatException {
+        String calculateString = expression.toString();
+        if (!calculateString.equals(makeExponent(calculateString))) {
+            calculateString = makeExponent(calculateString);
+        }
+        double result = mCalculator.calculate(calculateString);
+        String resultString = String.valueOf(result);
+        StringBuilder tempResult = new StringBuilder();
+        if (mInputStringBuilder.length() < 2 ||
+                (String.valueOf(resultString.charAt(resultString.length() - 2)).equals(mDot) &&
+                        String.valueOf(resultString.charAt(resultString.length() - 1)).equals("0"))) {
+            tempResult.append((int) result);
+        } else {
+            int intPart = (int) result;
+            result = round(result, 11 - Integer.toString(intPart).length());
+            tempResult.append(result);
+
+        }
+        return tempResult;
     }
 
     @Override
@@ -473,6 +486,25 @@ public class MainActivity extends AppCompatActivity implements AppConstants {
         }
     }
 
+    private void calculateTempExpression() {
+        String lastChar = getLastChar();
+        StringBuilder tempResult = new StringBuilder(mInputStringBuilder);
+        if (isANumber(lastChar) || lastChar.equals(mExclamation)) {
+            for (int i = 0; i < mOpenBracketCounter; i++) {
+                tempResult.append(mCloseBracket);
+            }
+            try {
+                tempResult = calculateResult(tempResult);
+                printResult(tempResult);
+            } catch (NumberFormatException ignored) {
+            }
+        }
+    }
+
+    private void printResult(StringBuilder tempResult) {
+        mResultView.setText(tempResult);
+    }
+
     private boolean isANumber(String check) {
         try {
             Integer.parseInt(check);
@@ -488,7 +520,8 @@ public class MainActivity extends AppCompatActivity implements AppConstants {
     }
 
     private void updateResult() {
-        mResultView.setText(mInputStringBuilder.toString());
+        mInputView.setText(mInputStringBuilder.toString());
+        calculateTempExpression();
     }
 
     private String makeExponent(String string) {
@@ -513,7 +546,7 @@ public class MainActivity extends AppCompatActivity implements AppConstants {
         state.putString(KEY_INPUT_STRING, mInputStringBuilder.toString());
         state.putInt(KEY_BRACKET_COUNTER, mOpenBracketCounter);
         state.putBoolean(KEY_PRESSED_DOT, mDotPressed);
-        state.putString(KEY_RESULT_STRING, mResultString);
+        state.putString(KEY_RESULT_STRING, mInputStringWithResult);
         state.putString(KEY_EXCEPTION, mException);
         state.putInt(KEY_NUMBERS_COUNTER, mInputNumbersCounter);
     }

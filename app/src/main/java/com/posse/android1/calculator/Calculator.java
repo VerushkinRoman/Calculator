@@ -36,7 +36,7 @@ public class Calculator {
         mLog = mainActivity.getLog();
     }
 
-    public double calculate(final String inputString) {
+    double calculate(final String inputString) {
         return new Object() {
             int mPosition = -1;
             int mChar;

@@ -2,7 +2,7 @@
 <resources>
     <string name="app_name">Калькулятор</string>
     <string name="expand_collapse_button_description">Раскрыть/Закрыть</string>
-    <string name="calculation_error">Деление на 0 или переполнение!</string>
+    <string name="calculation_error">Ошибка!</string>
     <string name="exceptionString">\". Введенное выражение:\u0020"</string>
     <string name="settings_button">Кнопка настроек</string>
     <string name="close_settings">Сохранить</string>
