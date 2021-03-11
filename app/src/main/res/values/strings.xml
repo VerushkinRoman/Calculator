@@ -12,10 +12,23 @@
     <string name="number0">0</string>
     <string name="numberDot">.</string>
     <string name="numberEqual">=</string>
-    <string name="delete">C</string>
     <string name="division">/</string>
     <string name="multiplication">*</string>
     <string name="subtraction">-</string>
     <string name="addition">+</string>
     <string name="background">background</string>
+    <string name="sin">sin</string>
+    <string name="cos">cos</string>
+    <string name="tan">tan</string>
+    <string name="naturalLogarithm">ln</string>
+    <string name="logarithm">log</string>
+    <string name="squareRoot">√</string>
+    <string name="pi">π</string>
+    <string name="numberE">e</string>
+    <string name="degree">^</string>
+    <string name="openBracket">(</string>
+    <string name="closeBracket">)</string>
+    <string name="exclamation">!</string>
+    <string name="expand_collapse_button_description">Expand/Collapse</string>
+    <string name="calculation_error">Деление на 0 или переполнение!</string>
 </resources>

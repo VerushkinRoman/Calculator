@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_columnSpan="3"
@@ -8,168 +9,187 @@
     <TableRow
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center">
+        android:gravity="center|right"
+        tools:ignore="RtlHardcoded">
 
         <Button
-            android:id="@+id/number7"
+            android:id="@+id/sin"
             style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/transparent"
-            android:text="@string/number7"
+            android:onClick="additionalButtonsPress"
+            android:paddingTop="0dp"
+            android:text="@string/sin"
+            android:textAllCaps="false"
             android:textColor="@color/black"
             android:textSize="@dimen/key_text_size"
-            android:textStyle="bold"
-            android:onClick="numberButtonsPress"/>
+            android:textStyle="bold" />
 
         <Button
-            android:id="@+id/number8"
+            android:id="@+id/cos"
             style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/transparent"
-            android:text="@string/number8"
+            android:onClick="additionalButtonsPress"
+            android:paddingTop="0dp"
+            android:text="@string/cos"
+            android:textAllCaps="false"
             android:textColor="@color/black"
             android:textSize="@dimen/key_text_size"
-            android:textStyle="bold"
-            android:onClick="numberButtonsPress"/>
+            android:textStyle="bold" />
 
         <Button
-            android:id="@+id/number9"
+            android:id="@+id/tan"
             style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/transparent"
-            android:text="@string/number9"
+            android:onClick="additionalButtonsPress"
+            android:paddingTop="0dp"
+            android:text="@string/tan"
+            android:textAllCaps="false"
             android:textColor="@color/black"
             android:textSize="@dimen/key_text_size"
-            android:textStyle="bold"
-            android:onClick="numberButtonsPress"/>
+            android:textStyle="bold" />
     </TableRow>
 
     <TableRow
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center">
+        android:gravity="center|right"
+        tools:ignore="RtlHardcoded">
 
         <Button
-            android:id="@+id/number4"
+            android:id="@+id/naturalLogarithm"
             style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/transparent"
-            android:text="@string/number4"
+            android:onClick="additionalButtonsPress"
+            android:text="@string/naturalLogarithm"
+            android:textAllCaps="false"
             android:textColor="@color/black"
             android:textSize="@dimen/key_text_size"
-            android:textStyle="bold"
-            android:onClick="numberButtonsPress"/>
+            android:textStyle="bold" />
 
         <Button
-            android:id="@+id/number5"
+            android:id="@+id/logarithm"
             style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/transparent"
-            android:text="@string/number5"
+            android:onClick="additionalButtonsPress"
+            android:text="@string/logarithm"
+            android:textAllCaps="false"
             android:textColor="@color/black"
             android:textSize="@dimen/key_text_size"
-            android:textStyle="bold"
-            android:onClick="numberButtonsPress"/>
+            android:textStyle="bold" />
 
         <Button
-            android:id="@+id/number6"
+            android:id="@+id/squareRoot"
             style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/transparent"
-            android:text="@string/number6"
+            android:onClick="additionalButtonsPress"
+            android:text="@string/squareRoot"
+            android:textAllCaps="false"
             android:textColor="@color/black"
             android:textSize="@dimen/key_text_size"
-            android:textStyle="bold"
-            android:onClick="numberButtonsPress"/>
+            android:textStyle="bold" />
     </TableRow>
 
     <TableRow
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center">
+        android:gravity="center|right"
+        tools:ignore="RtlHardcoded">
 
         <Button
-            android:id="@+id/number1"
+            android:id="@+id/pi"
             style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/transparent"
-            android:text="@string/number1"
+            android:onClick="numberButtonsPress"
+            android:text="@string/pi"
+            android:textAllCaps="false"
             android:textColor="@color/black"
             android:textSize="@dimen/key_text_size"
-            android:textStyle="bold"
-            android:onClick="numberButtonsPress"/>
+            android:textStyle="bold" />
 
         <Button
-            android:id="@+id/number2"
+            android:id="@+id/numberE"
             style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/transparent"
-            android:text="@string/number2"
+            android:onClick="numberButtonsPress"
+            android:text="@string/numberE"
+            android:textAllCaps="false"
             android:textColor="@color/black"
             android:textSize="@dimen/key_text_size"
-            android:textStyle="bold"
-            android:onClick="numberButtonsPress"/>
+            android:textStyle="bold" />
 
         <Button
-            android:id="@+id/number3"
+            android:id="@+id/degree"
             style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/transparent"
-            android:text="@string/number3"
+            android:onClick="additionalButtonsPress"
+            android:text="@string/degree"
+            android:textAllCaps="false"
             android:textColor="@color/black"
             android:textSize="@dimen/key_text_size"
-            android:textStyle="bold"
-            android:onClick="numberButtonsPress" />
+            android:textStyle="bold" />
     </TableRow>
 
     <TableRow
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center">
+        android:gravity="center|right"
+        tools:ignore="RtlHardcoded">
 
         <Button
-            android:id="@+id/number0"
+            android:id="@+id/openBracket"
             style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/transparent"
-            android:text="@string/number0"
+            android:onClick="additionalButtonsPress"
+            android:text="@string/openBracket"
+            android:textAllCaps="false"
             android:textColor="@color/black"
             android:textSize="@dimen/key_text_size"
-            android:textStyle="bold"
-            android:onClick="numberButtonsPress"/>
+            android:textStyle="bold" />
 
         <Button
-            android:id="@+id/numberDot"
+            android:id="@+id/closeBracket"
             style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/transparent"
-            android:text="@string/numberDot"
+            android:onClick="additionalButtonsPress"
+            android:text="@string/closeBracket"
+            android:textAllCaps="false"
             android:textColor="@color/black"
             android:textSize="@dimen/key_text_size"
-            android:textStyle="bold"
-            android:onClick="dotButtonsPress"/>
+            android:textStyle="bold" />
 
         <Button
-            android:id="@+id/numberEqual"
+            android:id="@+id/exclamation"
             style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/transparent"
-            android:text="@string/numberEqual"
+            android:onClick="additionalButtonsPress"
+            android:text="@string/exclamation"
+            android:textAllCaps="false"
             android:textColor="@color/black"
             android:textSize="@dimen/key_text_size"
-            android:textStyle="bold"
-            android:onClick="equalsPress"/>
+            android:textStyle="bold" />
     </TableRow>
 </TableLayout>

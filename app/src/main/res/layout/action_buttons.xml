@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -12,20 +13,20 @@
     <Button
         android:id="@+id/delete"
         style="@style/Widget.AppCompat.Button.Borderless"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:backgroundTint="@color/transparent"
-        android:text="@string/delete"
-        android:textColor="@color/black"
-        android:textSize="@dimen/action_key_text_size"
-        android:textStyle="bold" />
+        app:icon="@android:drawable/ic_input_delete"
+        app:iconGravity="textStart"
+        app:iconTint="@color/black" />
 
     <Button
         android:id="@+id/division"
         style="@style/Widget.AppCompat.Button.Borderless"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:backgroundTint="@color/transparent"
+        android:onClick="actionButtonsPress"
         android:text="@string/division"
         android:textColor="@color/black"
         android:textSize="@dimen/action_key_text_size"
@@ -34,9 +35,10 @@
     <Button
         android:id="@+id/multiplication"
         style="@style/Widget.AppCompat.Button.Borderless"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:backgroundTint="@color/transparent"
+        android:onClick="actionButtonsPress"
         android:text="@string/multiplication"
         android:textColor="@color/black"
         android:textSize="@dimen/action_key_text_size"
@@ -45,9 +47,10 @@
     <Button
         android:id="@+id/subtraction"
         style="@style/Widget.AppCompat.Button.Borderless"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:backgroundTint="@color/transparent"
+        android:onClick="actionButtonsPress"
         android:text="@string/subtraction"
         android:textColor="@color/black"
         android:textSize="@dimen/action_key_text_size"
@@ -56,9 +59,10 @@
     <Button
         android:id="@+id/addition"
         style="@style/Widget.AppCompat.Button.Borderless"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:backgroundTint="@color/transparent"
+        android:onClick="actionButtonsPress"
         android:text="@string/addition"
         android:textColor="@color/black"
         android:textSize="@dimen/action_key_text_size"
