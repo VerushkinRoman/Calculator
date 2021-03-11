@@ -18,6 +18,10 @@ interface AppConstants {
             AppConstants.class.getCanonicalName() + "mIsDarkMode";
     String KEY_FOLLOW_SYSTEM =
             AppConstants.class.getCanonicalName() + "mIsFollowSystem";
+    String KEY_TEMP_RESULT =
+            AppConstants.class.getCanonicalName() + "mTempResult";
+    String KEY_RESULT =
+            AppConstants.class.getCanonicalName() + "mResult";
     String PREFS_NAME =
             AppConstants.class.getCanonicalName() + "settings";
 }

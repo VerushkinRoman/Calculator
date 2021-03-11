@@ -18,22 +18,22 @@ public class Calculator {
     private final String mLn;
     private final String mLog;
 
-    Calculator(MainActivity mainActivity) {
-        mAddition = mainActivity.getAddition().charAt(0);
-        mSubtraction = mainActivity.getSubtraction().charAt(0);
-        mMultiplication = mainActivity.getMultiplication().charAt(0);
-        mDivision = mainActivity.getDivision().charAt(0);
-        mOpenBracket = mainActivity.getOpenBracket().charAt(0);
-        mCloseBracket = mainActivity.getCloseBracket().charAt(0);
-        mDot = mainActivity.getDot().charAt(0);
-        mDegree = mainActivity.getDegree().charAt(0);
-        mSquareRoot = mainActivity.getSquareRoot().charAt(0);
-        mExclamation = mainActivity.getExclamation().charAt(0);
-        mSin = mainActivity.getSin();
-        mCos = mainActivity.getCos();
-        mTan = mainActivity.getTan();
-        mLn = mainActivity.getLn();
-        mLog = mainActivity.getLog();
+    Calculator(ButtonsHandler buttonsHandler) {
+        mAddition = buttonsHandler.getAddition().charAt(0);
+        mSubtraction = buttonsHandler.getSubtraction().charAt(0);
+        mMultiplication = buttonsHandler.getMultiplication().charAt(0);
+        mDivision = buttonsHandler.getDivision().charAt(0);
+        mOpenBracket = buttonsHandler.getOpenBracket().charAt(0);
+        mCloseBracket = buttonsHandler.getCloseBracket().charAt(0);
+        mDot = buttonsHandler.getDot().charAt(0);
+        mDegree = buttonsHandler.getDegree().charAt(0);
+        mSquareRoot = buttonsHandler.getSquareRoot().charAt(0);
+        mExclamation = buttonsHandler.getExclamation().charAt(0);
+        mSin = buttonsHandler.getSin();
+        mCos = buttonsHandler.getCos();
+        mTan = buttonsHandler.getTan();
+        mLn = buttonsHandler.getLn();
+        mLog = buttonsHandler.getLog();
     }
 
     double calculate(final String inputString) {
