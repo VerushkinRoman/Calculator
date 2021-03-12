@@ -11,7 +11,7 @@ import java.math.RoundingMode;
 
 class ButtonsHandler implements AppConstants {
 
-    private static final int HOLD_DELAY = 500;
+    private static final int HOLD_DELAY = 1000;
 
     private final StringBuilder mInputStringBuilder = new StringBuilder("0");
     private final StringBuilder mResult = new StringBuilder();
