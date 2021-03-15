@@ -95,11 +95,11 @@ public class MainActivity extends AppCompatActivity implements AppConstants {
                     if (slideOffset > 0) {
                         mKeyboard.setVisibility(View.INVISIBLE);
                         mActions.setVisibility(View.INVISIBLE);
-                        mExpandButton.setImageResource(android.R.drawable.arrow_down_float);
+                        mExpandButton.setImageResource(R.drawable.down);
                     } else {
                         mKeyboard.setVisibility(View.VISIBLE);
                         mActions.setVisibility(View.VISIBLE);
-                        mExpandButton.setImageResource(android.R.drawable.arrow_up_float);
+                        mExpandButton.setImageResource(R.drawable.up);
                     }
                 }
 
