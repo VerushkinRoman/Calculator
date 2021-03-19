@@ -12,47 +12,26 @@
         android:gravity="center|right"
         tools:ignore="RtlHardcoded">
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/sin"
-            style="@style/Widget.AppCompat.Button.Borderless"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/transparent"
+            style="@style/AdditionButtonsStyle"
             android:onClick="additionalButtonsPress"
             android:paddingTop="0dp"
-            android:text="@string/sin"
-            android:textAllCaps="false"
-            android:textColor="@color/black"
-            android:textSize="@dimen/key_text_size"
-            android:textStyle="bold" />
+            android:text="@string/sin" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/cos"
-            style="@style/Widget.AppCompat.Button.Borderless"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/transparent"
+            style="@style/AdditionButtonsStyle"
             android:onClick="additionalButtonsPress"
             android:paddingTop="0dp"
-            android:text="@string/cos"
-            android:textAllCaps="false"
-            android:textColor="@color/black"
-            android:textSize="@dimen/key_text_size"
-            android:textStyle="bold" />
+            android:text="@string/cos" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/tan"
-            style="@style/Widget.AppCompat.Button.Borderless"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/transparent"
+            style="@style/AdditionButtonsStyle"
             android:onClick="additionalButtonsPress"
             android:paddingTop="0dp"
-            android:text="@string/tan"
-            android:textAllCaps="false"
-            android:textColor="@color/black"
-            android:textSize="@dimen/key_text_size"
-            android:textStyle="bold" />
+            android:text="@string/tan" />
     </TableRow>
 
     <TableRow
@@ -61,44 +40,23 @@
         android:gravity="center|right"
         tools:ignore="RtlHardcoded">
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/naturalLogarithm"
-            style="@style/Widget.AppCompat.Button.Borderless"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/transparent"
+            style="@style/AdditionButtonsStyle"
             android:onClick="additionalButtonsPress"
-            android:text="@string/naturalLogarithm"
-            android:textAllCaps="false"
-            android:textColor="@color/black"
-            android:textSize="@dimen/key_text_size"
-            android:textStyle="bold" />
+            android:text="@string/naturalLogarithm" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/logarithm"
-            style="@style/Widget.AppCompat.Button.Borderless"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/transparent"
+            style="@style/AdditionButtonsStyle"
             android:onClick="additionalButtonsPress"
-            android:text="@string/logarithm"
-            android:textAllCaps="false"
-            android:textColor="@color/black"
-            android:textSize="@dimen/key_text_size"
-            android:textStyle="bold" />
+            android:text="@string/logarithm" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/squareRoot"
-            style="@style/Widget.AppCompat.Button.Borderless"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/transparent"
+            style="@style/AdditionButtonsStyle"
             android:onClick="additionalButtonsPress"
-            android:text="@string/squareRoot"
-            android:textAllCaps="false"
-            android:textColor="@color/black"
-            android:textSize="@dimen/key_text_size"
-            android:textStyle="bold" />
+            android:text="@string/squareRoot" />
     </TableRow>
 
     <TableRow
@@ -107,44 +65,23 @@
         android:gravity="center|right"
         tools:ignore="RtlHardcoded">
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/pi"
-            style="@style/Widget.AppCompat.Button.Borderless"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/transparent"
+            style="@style/AdditionButtonsStyle"
             android:onClick="numberButtonsPress"
-            android:text="@string/pi"
-            android:textAllCaps="false"
-            android:textColor="@color/black"
-            android:textSize="@dimen/key_text_size"
-            android:textStyle="bold" />
+            android:text="@string/pi" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/numberE"
-            style="@style/Widget.AppCompat.Button.Borderless"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/transparent"
+            style="@style/AdditionButtonsStyle"
             android:onClick="numberButtonsPress"
-            android:text="@string/numberE"
-            android:textAllCaps="false"
-            android:textColor="@color/black"
-            android:textSize="@dimen/key_text_size"
-            android:textStyle="bold" />
+            android:text="@string/numberE" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/degree"
-            style="@style/Widget.AppCompat.Button.Borderless"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/transparent"
+            style="@style/AdditionButtonsStyle"
             android:onClick="additionalButtonsPress"
-            android:text="@string/degree"
-            android:textAllCaps="false"
-            android:textColor="@color/black"
-            android:textSize="@dimen/key_text_size"
-            android:textStyle="bold" />
+            android:text="@string/degree" />
     </TableRow>
 
     <TableRow
@@ -153,43 +90,22 @@
         android:gravity="center|right"
         tools:ignore="RtlHardcoded">
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/openBracket"
-            style="@style/Widget.AppCompat.Button.Borderless"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/transparent"
+            style="@style/AdditionButtonsStyle"
             android:onClick="additionalButtonsPress"
-            android:text="@string/openBracket"
-            android:textAllCaps="false"
-            android:textColor="@color/black"
-            android:textSize="@dimen/key_text_size"
-            android:textStyle="bold" />
+            android:text="@string/openBracket" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/closeBracket"
-            style="@style/Widget.AppCompat.Button.Borderless"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/transparent"
+            style="@style/AdditionButtonsStyle"
             android:onClick="additionalButtonsPress"
-            android:text="@string/closeBracket"
-            android:textAllCaps="false"
-            android:textColor="@color/black"
-            android:textSize="@dimen/key_text_size"
-            android:textStyle="bold" />
+            android:text="@string/closeBracket" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/exclamation"
-            style="@style/Widget.AppCompat.Button.Borderless"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/transparent"
+            style="@style/AdditionButtonsStyle"
             android:onClick="additionalButtonsPress"
-            android:text="@string/exclamation"
-            android:textAllCaps="false"
-            android:textColor="@color/black"
-            android:textSize="@dimen/key_text_size"
-            android:textStyle="bold" />
+            android:text="@string/exclamation" />
     </TableRow>
 </TableLayout>

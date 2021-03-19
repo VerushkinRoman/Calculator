@@ -30,40 +30,16 @@
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/background" />
 
-        <androidx.core.widget.NestedScrollView
-            android:id="@+id/nestedScrollView2"
+        <include
+            android:id="@+id/resultView"
+            layout="@layout/result_layout"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:fillViewport="true"
-            android:paddingStart="@dimen/result_text_size"
-            android:paddingEnd="@dimen/result_text_size"
             app:layout_constraintBottom_toTopOf="@+id/keyboard"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <Space
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1" />
-
-                <TextView
-                    android:id="@+id/result"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:backgroundTint="@color/transparent"
-                    android:textAlignment="textEnd"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/result_text_size"
-                    android:textStyle="bold" />
-            </LinearLayout>
-        </androidx.core.widget.NestedScrollView>
+            app:layout_constraintVertical_bias="0.0" />
 
         <include
             android:id="@+id/keyboard"
@@ -81,12 +57,12 @@
             app:layout_constraintBottom_toTopOf="@+id/spaceInTheEnd"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/keyboard"
-            app:layout_constraintTop_toBottomOf="@+id/nestedScrollView2" />
+            app:layout_constraintTop_toBottomOf="@+id/resultView" />
 
         <Space
             android:id="@+id/spaceInTheEnd"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/key_text_size"
+            android:layout_height="@dimen/sliding_panel_height"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
