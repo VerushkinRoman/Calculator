@@ -1,10 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="ButtonsStyle" parent="@style/Widget.AppCompat.Button.Borderless">
+    <style name="ButtonsStyle" parent="@style/Widget.MaterialComponents.Button.OutlinedButton">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:backgroundTint">@color/transparent</item>
+        <item name="strokeColor">@color/text_color</item>
+        <item name="android:layout_margin">5dp</item>
+        <item name="android:padding">0dp</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="android:minWidth">70dip</item>
         <item name="android:textColor">@color/text_color</item>
         <item name="android:textSize">@dimen/key_text_size</item>
         <item name="android:textStyle">bold</item>
@@ -16,5 +22,35 @@
 
     <style name="ActionButtonsStyle" parent="ButtonsStyle">
         <item name="android:textSize">@dimen/action_key_text_size</item>
+        <item name="android:minHeight">36dip</item>
+    </style>
+
+    <style name="SettingsStyle" parent="AdditionButtonsStyle">
+        <item name="android:textSize">@dimen/action_key_text_size</item>
+    </style>
+
+    <style name="BackgroundStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:foreground">@drawable/overlay</item>
+        <item name="android:scaleType">centerCrop</item>
+    </style>
+
+    <style name="TextInputStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:backgroundTint">@color/transparent</item>
+        <item name="android:gravity">bottom|end</item>
+        <item name="android:paddingStart">@dimen/result_text_size</item>
+        <item name="android:paddingEnd">@dimen/result_text_size</item>
+        <item name="android:scrollbars">vertical</item>
+        <item name="android:textColor">@color/text_color</item>
+        <item name="android:textSize">@dimen/result_text_size</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="ResultStyle" parent="TextInputStyle">
+        <item name="android:textColor">@color/result_color</item>
+        <item name="android:textSize">@dimen/key_text_size</item>
     </style>
 </resources>

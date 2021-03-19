@@ -17,18 +17,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ImageView
+        <include
             android:id="@+id/background"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:contentDescription="@string/background"
-            android:foreground="@drawable/overlay"
-            android:scaleType="fitXY"
+            layout="@layout/background_layout"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/background" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <include
             android:id="@+id/resultView"

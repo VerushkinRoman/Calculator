@@ -30,6 +30,12 @@
     <string name="closeBracket" translatable="false">)</string>
     <string name="exclamation" translatable="false">!</string>
     <string name="expand_collapse_button_description">Expand/Collapse</string>
-    <string name="calculation_error">Division by 0 or Overloading!</string>
-    <string name="exceptionString">\". Input value is: \"</string>
+    <string name="calculation_error">Error!</string>
+    <string name="exceptionString">\". Input value is:\u0020"</string>
+    <string name="settings_button">Settings button</string>
+    <string name="close_settings">Save</string>
+    <string name="night_theme">Night</string>
+    <string name="day_theme">Day</string>
+    <string name="system_theme">System</string>
+    <string name="theme_mode">Day/Night mode:</string>
 </resources>

@@ -2,4 +2,5 @@
 <resources>
     <color name="text_color">#FFFFFFFF</color>
     <color name="overlay_transparent">#CC000000</color>
+    <color name="result_color">#FFC3C3C3</color>
 </resources>
